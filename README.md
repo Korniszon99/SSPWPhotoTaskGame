@@ -7,7 +7,7 @@ English below
 <img src="https://github.com/user-attachments/assets/1662481b-7f71-4d1b-bd31-e23e266cf008" width="200" />
 
 ## Opis
-Photo Task Game FUT to aplikacja internetowa stworzona w PHP na potrzebę Sprawozdawczo - Wyborczego Zjazdu Forum Uczelni Technicznych na Politechnice Gdańskiej w 2024r. Celem aplikacji była integracja gości na balu, który odbywał się w trakcie zjazdu poprzez wykonywanie zadań fotograficznych. Użytkownicy mogą się logować, losować zadania, wykonywać je poprzez przesyłanie zdjęć oraz przeglądać galerię wykonanych zadań.
+Photo Task Game FUT to aplikacja internetowa stworzona w PHP na potrzeby Zjazdu Sprawozdawczo-Wyborczego Forum Uczelni Technicznych na Politechnice Gdańskiej w 2024 r. Celem aplikacji była integracja gości na balu, który odbywał się w trakcie zjazdu, poprzez wykonywanie zadań fotograficznych głównie z innymi uczestnikami. Użytkownicy mogą się logować, losować zadania, przeglądać zadania, które zostały dla nich wylosowane, wykonywać je poprzez przesyłanie zdjęć oraz przeglądać galerię wykonanych zadań. Ponadto każdy uczestnik miał możliwość przeglądania galerii zdjęć przedstawiających wykonane zadania przez wszystkich uczestników oraz pobierania ich na swoje urządzenie.
 
 ## Funkcje
 - Rejestracja i logowanie użytkowników
