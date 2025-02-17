@@ -1,7 +1,7 @@
 /* 
 #dcdcdc - Light Gray
-#003768 - Dark Blue
-#0066c6 - Blue
+#C85028 - Dark Orange
+#ff9425 - Blue
 
 
 
@@ -42,7 +42,7 @@ input[type="text"], input[type="password"], input[type="file"] {
 
 button {
     padding: 10px 20px;
-    background-color: #007bff;
+    background-color: #ff9425;
     color: #ffffff;
     border: none;
     border-radius: 4px;
@@ -52,7 +52,7 @@ button {
 a {
     display: block;
     margin: 10px 0;
-    color: #007bff;
+    color: #ff9425;
     text-decoration: none;
 }
 
@@ -135,9 +135,9 @@ a:hover {
 
 
 .Button1 {
-	background-color:#0066c6;
+	background-color:#ff9425;
 	border-radius:28px;
-	border:1px solid #003768;
+	border:1px solid #C85028;
 	display:inline-block;
 	cursor:pointer;
 	color:#ffffff;
@@ -145,15 +145,15 @@ a:hover {
 	font-size:17px;
 	padding:16px 31px;
 	text-decoration:none;
-	text-shadow:0px 1px 0px #003768;
+	text-shadow:0px 1px 0px #C85028;
     width: 80%;
     max-width: 300px;
 }
 
 .Button2 {
-    background-color:#0066c6;
+    background-color:#ff9425;
     border-radius:28px;
-    border:2px solid #003768;
+    border:2px solid #C85028;
     display:inline-block;
     cursor:pointer;
     color:#ffffff;
@@ -161,7 +161,7 @@ a:hover {
     font-size:12px;
     padding:8px 12px;
     text-decoration:none;
-    text-shadow:0px 1px 0px #003768;
+    text-shadow:0px 1px 0px #C85028;
     max-width: 100px;
     text-decoration: none;
     margin: auto;
@@ -170,15 +170,15 @@ a:hover {
 .Button2Active {
     background-color:#ffffff;
     border-radius:28px;
-    border:2px solid #003768;
+    border:2px solid #C85028;
     display:inline-block;
     cursor:pointer;
-    color:#003768;
+    color:#ff9425;
     font-family:Arial;
     font-size:12px;
     padding:8px 12px;
     text-decoration:none;
-    text-shadow:0px 1px 0px #003768;
+    text-shadow:0px 1px 0px #C85028;
     max-width: 100px;
     text-decoration: none;
     margin: auto;
@@ -187,7 +187,7 @@ a:hover {
 .Button2:hover{
     background-color:#dcdcdc;
     text-decoration: none;
-    color:#003768
+    color:#C85028
 }
 .Button2Active:hover {
     background-color:#dcdcdc;
@@ -196,7 +196,7 @@ a:hover {
 
 .Button1:hover {
 	background-color:#dcdcdc;
-    color:#003768;
+    color:#C85028;
     text-decoration: none;
     
 }
@@ -240,7 +240,7 @@ a:hover {
         font-size: large;
         border-radius: 0;
         box-shadow: none;
-        bottom: 100 px;
+        bottom: 100px;
     }
 
     input[type="text"], input[type="password"], input[type="file"] {

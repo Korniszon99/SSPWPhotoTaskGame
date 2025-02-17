@@ -14,7 +14,7 @@ include 'functions.php';
 
 <body>
     <div class="container">
-        <img src="graphics\MessengerGrupa@2x.png" alt="Logo" style="max-width: 50%;">
+        <img src="graphics\476663297_639777108738543_8291091253138925484_n.png" alt="Logo" style="max-width: 50%;">
         <h1>Zjazd FUT PG - gra fotograficzna</h1>
         <p>Witaj, wylosuj zadania, rób zdjęcia i baw się dobrze</p>
         <?php
