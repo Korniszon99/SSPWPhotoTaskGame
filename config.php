@@ -12,9 +12,22 @@ $db_password = getenv('DB_PASSWORD');
 $db_name = getenv('DB_NAME');
 
 try {
-    $con = mysqli_connect($db_host, $db_user, $db_password, $db_name);
+    $con = mysqli_init();
 
-    if (!$con) {
+    // Ustawienia SSL
+    mysqli_ssl_set($con, NULL, NULL, NULL, NULL, NULL);
+
+    // Połączenie z wymuszeniem SSL
+    if (!mysqli_real_connect(
+        $con,
+        $db_host,
+        $db_user,
+        $db_password,
+        $db_name,
+        3306,
+        NULL,
+        MYSQLI_CLIENT_SSL
+    )) {
         throw new Exception("Błąd połączenia MySQL: " . mysqli_connect_error());
     }
 
