@@ -15,7 +15,7 @@ include 'functions.php';
 <body>
     <div class="container">
         <img src="graphics\476663297_639777108738543_8291091253138925484_n.png" alt="Logo" style="max-width: 50%;">
-        <h1>Zjazd FUT PG - gra fotograficzna</h1>
+        <h1>Szkolenie Komisji 2025 - gra fotograficzna</h1>
         <p>Witaj, wylosuj zadania, rób zdjęcia i baw się dobrze</p>
         <?php
         display_flash_message();
@@ -31,7 +31,7 @@ include 'functions.php';
         ?>
     </div>
     <div class="loga">
-        <img id="sspg_logo_bottom" src="graphics\SSPG-Logo-Pozytyw-Poziom-Niebieski_large_RGB.png" alt="Logo SSPG">
+        <img id="sspg_logo_bottom" src="graphics\02_LOGOSSPW_WYPEŁNIENIE-PODSTAWOWE_RGB_RASTER.png" alt="Logo SSPG">
         <img id="fut_logo_bottom" src="graphics\logo-FUT-PL-poziom-kolor-RGB.png" alt="Logo FUT">
     </div>
 </body>
