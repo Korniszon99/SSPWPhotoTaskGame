@@ -50,7 +50,7 @@ if (!$photo) {
         <a href="gallery.php">Powrót do galerii</a>
     </div>
     <div class="loga">
-        <img id="sspg_logo_bottom" src="graphics\SSPG-Logo-Pozytyw-Poziom-Niebieski_large_RGB.png" alt="Logo SSPG">
+        <img id="sspg_logo_bottom" src="graphics\02_LOGOSSPW_WYPEŁNIENIE-PODSTAWOWE_RGB_RASTER.png" alt="Logo SSPG">
         <img id="fut_logo_bottom" src="graphics\logo-FUT-PL-poziom-kolor-RGB.png" alt="Logo FUT">
     </div>
 </body>
