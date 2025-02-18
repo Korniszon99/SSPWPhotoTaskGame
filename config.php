@@ -12,14 +12,14 @@ $db_password = getenv('DB_PASSWORD');
 $db_name = getenv('DB_NAME');
 
 try {
-    $con = mysqli_init();
+    $mysqli = mysqli_init();
 
     // Ustawienia SSL
-    mysqli_ssl_set($con, NULL, NULL, NULL, NULL, NULL);
+    mysqli_ssl_set($mysqli, NULL, NULL, NULL, NULL, NULL);
 
     // Połączenie z wymuszeniem SSL
     if (!mysqli_real_connect(
-        $con,
+        $mysqli,
         $db_host,
         $db_user,
         $db_password,
