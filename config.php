@@ -31,7 +31,7 @@ try {
         throw new Exception("Błąd połączenia MySQL: " . mysqli_connect_error());
     }
 
-    echo "Połączono z bazą danych!";
+
 
 } catch (Exception $e) {
     die("Wystąpił błąd: " . $e->getMessage());
