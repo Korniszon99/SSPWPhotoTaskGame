@@ -1,7 +1,7 @@
 <?php
 include 'config.php';
 include 'functions.php';
-
+global $mysqli;
 // Sprawdź, czy użytkownik jest zalogowany
 if (!isset($_SESSION['username'])) {
     redirect('login.php');

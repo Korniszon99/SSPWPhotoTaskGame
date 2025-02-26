@@ -1,7 +1,7 @@
 <?php
 include 'config.php';
 include 'functions.php';
-
+global $mysqli;
 // Sprawdź, czy formularz został przesłany metodą POST i czy przycisk login został kliknięty
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
     // Sanityzuj dane wejściowe

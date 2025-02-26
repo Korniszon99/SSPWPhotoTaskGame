@@ -1,7 +1,7 @@
 <?php
 include 'config.php';
 include 'functions.php';
-
+global $mysqli;
 if (!isset($_SESSION['username'])) {
     redirect('login.php');
 }
@@ -75,7 +75,7 @@ $stmt->close();
         <a href="dashboard.php" class="Button1">Powrót do menu głównego</a>
     </div>
     <div class="loga">
-        <img id="sspg_logo_bottom" src="graphics\02_LOGOSSPW_WYPEŁNIENIE-PODSTAWOWE_RGB_RASTER.png" alt="Logo SSPG">
+        <img id="sspg_logo_bottom" src="graphics\02_LOGOSSPW_WYPEŁNIENIE-PODSTAWOWE_RGB_RASTER.png" alt="Logo SSPW">
         <img id="fut_logo_bottom" src="graphics\logo-FUT-PL-poziom-kolor-RGB.png" alt="Logo FUT">
     </div>
 </body>
