@@ -1,5 +1,5 @@
 {
     "require": {
-        "microsoft/azure-storage-blob": "^1.5"
+        "cloudinary/cloudinary_php": "^3.1"
     }
 }

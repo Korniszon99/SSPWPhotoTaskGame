@@ -38,4 +38,21 @@ function sanitize_input($data)
 {
     return htmlspecialchars(trim($data), ENT_QUOTES, 'UTF-8');
 }
+
+/**
+ * Wybór języka i guess
+ */
+function trans($key) {
+    $lang = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'pl'; // Domyślnie język polski
+    static $translations = [];
+    if (empty($translations[$lang])) {
+        $file = __DIR__ . "/lang/$lang.php";
+        if (file_exists($file)) {
+            $translations[$lang] = include $file;
+        } else {
+            $translations[$lang] = [];
+        }
+    }
+    return isset($translations[$lang][$key]) ? $translations[$lang][$key] : $key;
+}
 ?>

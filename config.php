@@ -11,6 +11,7 @@ $db_user = getenv('DB_USER');
 $db_password = getenv('DB_PASSWORD');
 $db_name = getenv('DB_NAME');
 global $mysqli;
+global $lang;
 try {
     $mysqli = mysqli_init();
 
@@ -36,4 +37,12 @@ try {
 } catch (Exception $e) {
     die("Wystąpił błąd: " . $e->getMessage());
 }
+
+// Ustawienie domyślnego języka na polski
+if (!isset($_SESSION['lang'])) {
+    $_SESSION['lang'] = 'pl';
+}
+
+// Przechowywanie globalnego języka
+$lang = $_SESSION['lang'];
 ?>
