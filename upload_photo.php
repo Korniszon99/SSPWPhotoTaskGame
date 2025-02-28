@@ -2,6 +2,7 @@
 include 'config.php';
 include 'functions.php';
 global $mysqli;
+global $lang;
 
 // Sprawdź, czy użytkownik jest zalogowany
 if (!isset($_SESSION['username'])) {
@@ -16,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['upload_photo'])) {
     // Sprawdź, czy user_task_id jest prawidłowy i należy do użytkownika
     $stmt = $mysqli->prepare("SELECT 1 FROM user_tasks WHERE id = ? AND user_id = ?");
     if (!$stmt) {
-        die('Błąd zapytania: ' . $mysqli->error);
+        die(trans('query_error', $lang)); // Użyj klucza 'query_error' z tłumaczeniem
     }
     $stmt->bind_param('ii', $user_task_id, $user_id);
     $stmt->execute();
@@ -24,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['upload_photo'])) {
 
     // Jeśli user_task_id nie jest prawidłowy, ustaw wiadomość flash i przekieruj do listy zadań
     if ($stmt->num_rows == 0) {
-        set_flash_message('Nie masz przypisanego tego zadania.', 'negative');
+        set_flash_message(trans('upload_error_1', $lang), 'negative'); // Użyj klucza 'upload_error_1'
         redirect('task_list.php');
     }
     $stmt->close();
@@ -34,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['upload_photo'])) {
         $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
         // Sprawdź, czy typ pliku jest dozwolony
         if (!in_array($_FILES['photo']['type'], $allowed_types)) {
-            set_flash_message('Niedozwolony typ pliku. Dozwolone formaty: JPG, PNG, GIF.', 'negative');
+            set_flash_message(trans('upload_error_2', $lang), 'negative'); // Użyj klucza 'upload_error_2'
             redirect('task_list.php');
         }
 
@@ -53,24 +54,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['upload_photo'])) {
             // Zapisz informacje o przesłanym zdjęciu w bazie danych
             $stmt = $mysqli->prepare("INSERT INTO completed_tasks (user_id, user_task_id, photo) VALUES (?, ?, ?)");
             if (!$stmt) {
-                die('Błąd zapytania: ' . $mysqli->error);
+                die(trans('query_error', $lang)); // Użyj klucza 'query_error' z tłumaczeniem
             }
             $stmt->bind_param('iis', $user_id, $user_task_id, $unique_name);
             if ($stmt->execute()) {
-                set_flash_message('Zdjęcie zostało przesłane pomyślnie!', 'positive');
+                set_flash_message(trans('upload_succeed', $lang), 'positive'); // Użyj klucza 'upload_succeed'
                 redirect('task_list.php');
             } else {
-                set_flash_message('Błąd podczas zapisywania zdjęcia w bazie danych.', 'negative');
+                set_flash_message(trans('upload_error_3', $lang), 'negative'); // Użyj klucza 'upload_error_3'
                 redirect('task_list.php');
             }
             $stmt->close();
         } else {
-            set_flash_message('Nie udało się przesłać zdjęcia.', 'negative');
+            set_flash_message(trans('upload_error_4', $lang), 'negative'); // Użyj klucza 'upload_error_4'
             redirect('task_list.php');
         }
     } else {
         // Jeśli plik nie został wybrany lub wystąpił błąd podczas przesyłania, ustaw wiadomość flash
-        set_flash_message('Nie wybrano pliku lub wystąpił błąd podczas przesyłania.', 'negative');
+        set_flash_message(trans('upload_error_5', $lang), 'negative'); // Użyj klucza 'upload_error_5'
         redirect('task_list.php');
     }
 }

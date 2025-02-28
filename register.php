@@ -1,9 +1,9 @@
 <?php
 include 'config.php';
 include 'functions.php';
-global $mysqli;
+global $mysqli, $lang;
 
-// Sprawdź, czy formularz został przesłany metodą POST i czy przycisk register został kliknięty
+// Sprawdź, czy formularz został przesłany metodą POST
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
     // Sanityzuj dane wejściowe
     $username = sanitize_input($_POST['username']);
@@ -12,35 +12,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
 
     // Walidacja danych wejściowych
     if (empty($username) || empty($password_plain) || empty($password_confirm)) {
-        set_flash_message('Wszystkie pola są wymagane.', 'negative');
+        set_flash_message(trans('register_error_empty'), 'negative');
     } elseif ($password_plain !== $password_confirm) {
-        set_flash_message('Hasła nie są takie same.', 'negative');
+        set_flash_message(trans('register_error_password_mismatch'), 'negative');
     } else {
-        // Przygotuj zapytanie SQL do sprawdzenia, czy użytkownik o podanej nazwie już istnieje
+        // Sprawdź, czy użytkownik już istnieje
         $stmt = $mysqli->prepare("SELECT id FROM users WHERE username = ?");
         if (!$stmt) {
-            die('Błąd zapytania: ' . $mysqli->error);
+            die(trans('register_error_query') . ': ' . $mysqli->error);
         }
         $stmt->bind_param('s', $username);
         $stmt->execute();
         $stmt->store_result();
 
-        // Sprawdź, czy użytkownik o podanej nazwie już istnieje
         if ($stmt->num_rows > 0) {
-            set_flash_message('Użytkownik o tej nazwie już istnieje!', 'negative');
+            set_flash_message(trans('register_error_user_exists'), 'negative');
         } else {
-            // Zaszyfruj hasło i dodaj nowego użytkownika do bazy danych
+            // Hashowanie hasła i dodanie użytkownika
             $password_hash = password_hash($password_plain, PASSWORD_DEFAULT);
             $stmt = $mysqli->prepare("INSERT INTO users (username, password) VALUES (?, ?)");
             if (!$stmt) {
-                die('Błąd zapytania: ' . $mysqli->error);
+                die(trans('register_error_query') . ': ' . $mysqli->error);
             }
             $stmt->bind_param('ss', $username, $password_hash);
             if ($stmt->execute()) {
-                set_flash_message('Rejestracja zakończona sukcesem! Możesz się teraz zalogować.', 'positive');
+                set_flash_message(trans('register_success'), 'positive');
                 redirect('login.php');
             } else {
-                set_flash_message('Błąd rejestracji', 'negative');
+                set_flash_message(trans('register_error_general'), 'negative');
             }
         }
         $stmt->close();
@@ -49,31 +48,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
 ?>
 
 <!DOCTYPE html>
-<html lang="pl">
-
+<html lang="<?php echo $lang; ?>">
 <head>
     <meta charset="UTF-8">
-    <title>Rejestracja</title>
+    <title><?php echo trans('register_title'); ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-    <div class="container">
-        <h2>Rejestracja</h2>
-        <?php display_flash_message(); ?>
-        <form method="post" action="">
-            <input type="text" name="username" placeholder="Nazwa użytkownika" required>
-            <input type="password" name="password" placeholder="Hasło" required>
-            <input type="password" name="password_confirm" placeholder="Potwierdź hasło" required>
-            <button type="submit" name="register" class="Button1">Zarejestruj się</button>
-        </form>
-        <a href="index.php">Powrót na stronę główną</a>
-    </div>
-    <div class="loga">
-        <img id="sspg_logo_bottom" src="graphics\02_LOGOSSPW_WYPEŁNIENIE-PODSTAWOWE_RGB_RASTER.png" alt="Logo SSPG">
-        <img id="fut_logo_bottom" src="graphics\logo-FUT-PL-poziom-kolor-RGB.png" alt="Logo FUT">
-    </div>
+<div class="container">
+    <h2><?php echo trans('register_h2'); ?></h2>
+    <?php display_flash_message(); ?>
+    <form method="post" action="">
+        <input type="text" name="username" placeholder="<?php echo trans('register_placeholder_username'); ?>" required>
+        <input type="password" name="password" placeholder="<?php echo trans('register_placeholder_password'); ?>" required>
+        <input type="password" name="password_confirm" placeholder="<?php echo trans('register_placeholder_password_confirm'); ?>" required>
+        <button type="submit" name="register" class="Button1"><?php echo trans('register_button'); ?></button>
+    </form>
+    <a href="index.php"><?php echo trans('register_back'); ?></a>
+</div>
+<div class="loga">
+    <img id="sspg_logo_bottom" src="graphics/02_LOGOSSPW_WYPEŁNIENIE-PODSTAWOWE_RGB_RASTER.png" alt="Logo SSPG">
+    <img id="fut_logo_bottom" src="graphics/logo-FUT-PL-poziom-kolor-RGB.png" alt="Logo FUT">
+</div>
 </body>
-
 </html>

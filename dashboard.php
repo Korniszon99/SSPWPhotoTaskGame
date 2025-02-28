@@ -1,6 +1,8 @@
 <?php
 include 'config.php';
 include 'functions.php';
+include 'header.php';
+global $lang;
 
 if (!isset($_SESSION['username'])) {
     redirect('login.php');
@@ -33,40 +35,44 @@ $user_id = $_SESSION['user_id'];
 ?>
 
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="<?php echo $lang; ?>">
 
 <head>
     <meta charset="UTF-8">
-    <title>Menu główne</title>
+    <title><?php echo trans('dashboard_title'); ?></title> <!-- Użyj klucza 'dashboard_title' -->
     <link rel="stylesheet" href="style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
-    <div class="container">
-        <h2>Witaj, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h2>
-        <?php display_flash_message(); ?>
-        <a href="draw_task.php" class="Button1">Losuj zadanie</a><br />
-        <a href="task_list.php" class="Button1">Zobacz swoje zadania</a><br />
-        <a href="gallery.php" class="Button1">Galeria zdjęć</a><br />
-        <a href="logout.php" class="Button1">Wyloguj się</a>
+<div class="container">
+    <h2><?php echo sprintf(trans('dashboard_h2'), htmlspecialchars($_SESSION['username'])); ?></h2>
+    <!-- Użyj klucza 'dashboard_h2' -->
+    <?php display_flash_message(); ?>
+    <a href="draw_task.php" class="Button1"><?php echo trans('dashboard_b1'); ?></a><br/>
+    <!-- Użyj klucza 'dashboard_b1' -->
+    <a href="task_list.php" class="Button1"><?php echo trans('dashboard_b2'); ?></a><br/>
+    <!-- Użyj klucza 'dashboard_b2' -->
+    <a href="gallery.php" class="Button1"><?php echo trans('dashboard_b3'); ?></a><br/>
+    <!-- Użyj klucza 'dashboard_b3' -->
+    <a href="logout.php" class="Button1"><?php echo trans('logout'); ?></a> <!-- Użyj klucza 'logout' -->
 
-        <!-- 
+    <!--
         Dalsza część kodu, która wyświetla top 5 użytkowników z największą liczbą zrealizowanych zadań
         <?php if ($user_id == 6 && !empty($top_users)): ?>
-            <h3>Top 5 użytkowników z największą liczbą zrealizowanych zadań:</h3>
-            <ul>
-                <?php foreach ($top_users as $user): ?>
-                    <li><?php echo htmlspecialchars($user['username']); ?> - <?php echo htmlspecialchars($user['completed_count']); ?> zadań</li>
-                <?php endforeach; ?>
-            </ul>
-        <?php endif; ?> -->
-        
-    </div>
-    <div class="loga">
-        <img id="sspg_logo_bottom" src="graphics/02_LOGOSSPW_WYPEŁNIENIE-PODSTAWOWE_RGB_RASTER.png" alt="Logo SSPG">
-        <img id="fut_logo_bottom" src="graphics/logo-FUT-PL-poziom-kolor-RGB.png" alt="Logo FUT">
-    </div>
+            <h3><?php echo trans('dashboard_h3'); ?></h3>
+    <ul>
+        <?php foreach ($top_users as $user): ?>
+            <li><?php echo htmlspecialchars($user['username']); ?> - <?php echo htmlspecialchars($user['completed_count']); ?> <?php echo trans('dashboard_li'); ?></li>
+        <?php endforeach; ?>
+    </ul>
+    <?php endif; ?> -->
+
+</div>
+<div class="loga">
+    <img id="sspg_logo_bottom" src="graphics/02_LOGOSSPW_WYPEŁNIENIE-PODSTAWOWE_RGB_RASTER.png" alt="Logo SSPG">
+    <img id="fut_logo_bottom" src="graphics/logo-FUT-PL-poziom-kolor-RGB.png" alt="Logo FUT">
+</div>
 </body>
 
 </html>
