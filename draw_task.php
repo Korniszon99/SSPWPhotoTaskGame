@@ -29,7 +29,7 @@ if ($incomplete_tasks_count >= 5) {
 }
 
 // Fetch all available tasks for the current language
-$stmt = $mysqli->prepare("SELECT * FROM tasks WHERE lang = ?");
+$stmt = $mysqli->prepare("SELECT * FROM tasks WHERE language = ?");
 if (!$stmt) {
     die(trans('query_error', $lang)); // Use the 'query_error' translation key
 }
