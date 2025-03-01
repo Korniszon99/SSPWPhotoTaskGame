@@ -58,5 +58,6 @@ return [
     'view_back' => 'Back to Gallery',
     'view_task_error_1' => 'You do not have a task assigned.',
     'view_task_title' => 'Task Preview',
-    'view_task_h' => 'Your Tasks'
+    'view_task_h' => 'Your Tasks',
+    'login_back' => 'Back to main site'
 ];

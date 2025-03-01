@@ -58,5 +58,6 @@ return [
     'view_back' => 'Powrót do galerii',
     'view_task_error_1' => 'Nie masz przypisanego zadania.',
     'view_task_title' => 'Podgląd zadania',
-    'view_task_h' => 'Twoje zadania'
+    'view_task_h' => 'Twoje zadania',
+    'login_back' => 'Powrót do strony głównej'
 ];

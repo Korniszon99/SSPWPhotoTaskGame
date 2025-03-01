@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
 </head>
 <body>
 <div class="container">
-    <h2><?php echo trans('register_h2'); ?></h2>
+    <h2><?php echo trans('register2'); ?></h2>
     <?php display_flash_message(); ?>
     <form method="post" action="">
         <input type="text" name="username" placeholder="<?php echo trans('username'); ?>" required>
@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
         <input type="password" name="password_confirm" placeholder="<?php echo trans('password_confirm'); ?>" required>
         <button type="submit" name="register" class="Button1"><?php echo trans('register2'); ?></button>
     </form>
-    <a href="index.php"><?php echo trans('register_back'); ?></a>
+    <a href="index.php"><?php echo trans('login_back'); ?></a>
 </div>
 <div class="loga">
     <img id="sspg_logo_bottom" src="graphics/02_LOGOSSPW_WYPEŁNIENIE-PODSTAWOWE_RGB_RASTER.png" alt="Logo SSPG">
