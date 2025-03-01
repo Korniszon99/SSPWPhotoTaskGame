@@ -12,9 +12,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
 
     // Walidacja danych wejściowych
     if (empty($username) || empty($password_plain) || empty($password_confirm)) {
-        set_flash_message(trans('register_error_empty'), 'negative');
+        set_flash_message(trans('register_validate_1'), 'negative');
     } elseif ($password_plain !== $password_confirm) {
-        set_flash_message(trans('register_error_password_mismatch'), 'negative');
+        set_flash_message(trans('register_validate_2'), 'negative');
     } else {
         // Sprawdź, czy użytkownik już istnieje
         $stmt = $mysqli->prepare("SELECT id FROM users WHERE username = ?");
@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
         $stmt->store_result();
 
         if ($stmt->num_rows > 0) {
-            set_flash_message(trans('register_error_user_exists'), 'negative');
+            set_flash_message(trans('register_validate_3'), 'negative');
         } else {
             // Hashowanie hasła i dodanie użytkownika
             $password_hash = password_hash($password_plain, PASSWORD_DEFAULT);
@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
             }
             $stmt->bind_param('ss', $username, $password_hash);
             if ($stmt->execute()) {
-                set_flash_message(trans('register_success'), 'positive');
+                set_flash_message(trans('register_complete'), 'positive');
                 redirect('login.php');
             } else {
                 set_flash_message(trans('register_error_general'), 'negative');
@@ -60,10 +60,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
     <h2><?php echo trans('register_h2'); ?></h2>
     <?php display_flash_message(); ?>
     <form method="post" action="">
-        <input type="text" name="username" placeholder="<?php echo trans('register_placeholder_username'); ?>" required>
-        <input type="password" name="password" placeholder="<?php echo trans('register_placeholder_password'); ?>" required>
-        <input type="password" name="password_confirm" placeholder="<?php echo trans('register_placeholder_password_confirm'); ?>" required>
-        <button type="submit" name="register" class="Button1"><?php echo trans('register_button'); ?></button>
+        <input type="text" name="username" placeholder="<?php echo trans('username'); ?>" required>
+        <input type="password" name="password" placeholder="<?php echo trans('password'); ?>" required>
+        <input type="password" name="password_confirm" placeholder="<?php echo trans('password_confirm'); ?>" required>
+        <button type="submit" name="register" class="Button1"><?php echo trans('register2'); ?></button>
     </form>
     <a href="index.php"><?php echo trans('register_back'); ?></a>
 </div>

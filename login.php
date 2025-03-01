@@ -46,17 +46,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo trans('login_title'); ?></title>
+    <title><?php echo trans('login'); ?></title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div class="container">
-    <h2><?php echo trans('login_h2'); ?></h2>
+    <h2><?php echo trans('login'); ?></h2>
     <?php display_flash_message(); ?>
     <form method="post" action="">
-        <input type="text" name="username" placeholder="<?php echo trans('login_placeholder_user'); ?>" required><br />
-        <input type="password" name="password" placeholder="<?php echo trans('login_placeholder_pass'); ?>" required><br />
-        <button type="submit" name="login" class="Button1"><?php echo trans('login_button'); ?></button>
+        <input type="text" name="username" placeholder="<?php echo trans('username'); ?>" required><br />
+        <input type="password" name="password" placeholder="<?php echo trans('password'); ?>" required><br />
+        <button type="submit" name="login" class="Button1"><?php echo trans('login2'); ?></button>
     </form>
     <a href="index.php"><?php echo trans('login_back'); ?></a>
 </div>
