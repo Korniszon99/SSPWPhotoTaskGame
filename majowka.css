@@ -14,7 +14,7 @@ body {
     background-color: #f0f0f0;
     margin: 0;
     padding: 0;
-    display: flex;
+    display: flex;  
     flex-direction: column;
     min-height: 100vh;
     margin: 0;
@@ -42,7 +42,7 @@ input[type="text"], input[type="password"], input[type="file"] {
 
 button {
     padding: 10px 20px;
-    background-color: #ff9425;
+    background-color: #6591ad;
     color: #ffffff;
     border: none;
     border-radius: 4px;
@@ -52,7 +52,7 @@ button {
 a {
     display: block;
     margin: 10px 0;
-    color: #ff9425;
+    color: #6591ad;
     text-decoration: none;
 }
 
@@ -135,9 +135,9 @@ a:hover {
 
 
 .Button1 {
-	background-color:#ff9425;
+	background-color:#6591ad;
 	border-radius:28px;
-	border:1px solid #C85028;
+	border:1px solid #626d78;
 	display:inline-block;
 	cursor:pointer;
 	color:#ffffff;
@@ -145,15 +145,15 @@ a:hover {
 	font-size:17px;
 	padding:16px 31px;
 	text-decoration:none;
-	text-shadow:0px 1px 0px #C85028;
+	text-shadow:0px 1px 0px #626d78;
     width: 80%;
     max-width: 300px;
 }
 
 .Button2 {
-    background-color:#ff9425;
+    background-color:#6591ad;
     border-radius:28px;
-    border:2px solid #C85028;
+    border:2px solid #626d78;
     display:inline-block;
     cursor:pointer;
     color:#ffffff;
@@ -161,7 +161,7 @@ a:hover {
     font-size:12px;
     padding:8px 12px;
     text-decoration:none;
-    text-shadow:0px 1px 0px #C85028;
+    text-shadow:0px 1px 0px #626d78;
     max-width: 100px;
     text-decoration: none;
     margin: auto;
@@ -170,15 +170,15 @@ a:hover {
 .Button2Active {
     background-color:#ffffff;
     border-radius:28px;
-    border:2px solid #C85028;
+    border:2px solid #626d78;
     display:inline-block;
     cursor:pointer;
-    color:#ff9425;
+    color:#626d78;
     font-family:Arial;
     font-size:12px;
     padding:8px 12px;
     text-decoration:none;
-    text-shadow:0px 1px 0px #C85028;
+    text-shadow:0px 1px 0px #626d78;
     max-width: 100px;
     text-decoration: none;
     margin: auto;
@@ -187,7 +187,7 @@ a:hover {
 .Button2:hover{
     background-color:#dcdcdc;
     text-decoration: none;
-    color:#C85028
+    color:#626d78
 }
 .Button2Active:hover {
     background-color:#dcdcdc;
@@ -196,7 +196,7 @@ a:hover {
 
 .Button1:hover {
 	background-color:#dcdcdc;
-    color:#C85028;
+    color:#626d78;
     text-decoration: none;
     
 }
