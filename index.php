@@ -13,7 +13,7 @@ global $lang;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo trans('index_title'); ?></title> <!-- Użyj klucza 'index_title' -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="majowka.css">
 </head>
 
 <body>
