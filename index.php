@@ -18,7 +18,7 @@ global $lang;
 
 <body>
 <div class="container">
-    <img src="graphics/476663297_639777108738543_8291091253138925484_n.png" alt="Logo" style="max-width: 50%;">
+    <img src="graphics/majowka_2025.png" alt="Logo" style="max-width: 50%;">
     <h1><?php echo trans('index_h1'); ?></h1> <!-- Użyj klucza 'index_h1' -->
     <p><?php echo trans('index_p'); ?></p> <!-- Użyj klucza 'index_p' -->
     <?php

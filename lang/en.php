@@ -21,7 +21,7 @@ return [
     'gallery_bt2' => 'Next',
     'gallery_bt3' => 'Back to Main Menu',
     'index_title' => 'Home Page',
-    'index_h1' => '2025 Commission Training - Photo Game',
+    'index_h1' => 'Photo Game',
     'index_p' => 'Welcome, draw tasks, take photos, and have fun',
     'index_login' => 'You are logged in as ',
     'index_dashboard' => 'Go to Dashboard',
