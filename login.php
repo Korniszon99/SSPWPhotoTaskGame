@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
     <a href="index.php"><?php echo trans('login_back'); ?></a>
 </div>
 <div class="loga">
-    <img id="sspg_logo_bottom" src="graphics/02_LOGOSSPW_WYPEŁNIENIE-PODSTAWOWE_RGB_RASTER.png" alt="Logo SSPG">
+    <img id="sspg_logo_bottom" src="graphics/loga_sspw_wrs.png" alt="Logo SSPG">
 </div>
 <div class="SO">
     <img id="shoutout_bartek" src="graphics/Shoutout_Bartosz_Giza.png" alt="BartoszGiza">

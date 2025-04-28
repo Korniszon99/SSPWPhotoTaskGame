@@ -51,7 +51,7 @@ if (!$photo) {
     <a href="gallery.php"><?php echo trans('view_back'); ?></a> <!-- Użyj klucza 'view_back' -->
 </div>
 <div class="loga">
-    <img id="sspg_logo_bottom" src="graphics/02_LOGOSSPW_WYPEŁNIENIE-PODSTAWOWE_RGB_RASTER.png" alt="Logo SSPG">
+    <img id="sspg_logo_bottom" src="graphics/loga_sspw_wrs.png" alt="Logo SSPG">
 </div>
 <div class="SO">
     <img id="shoutout_bartek" src="graphics/Shoutout_Bartosz_Giza.png" alt="BartoszGiza">

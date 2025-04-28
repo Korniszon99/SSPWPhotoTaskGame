@@ -75,7 +75,7 @@ $stmt->close();
     <a href="dashboard.php" class="Button1"><?php echo trans('gallery_bt3'); ?></a>
 </div>
 <div class="loga">
-    <img id="sspg_logo_bottom" src="graphics/02_LOGOSSPW_WYPEŁNIENIE-PODSTAWOWE_RGB_RASTER.png" alt="Logo SSPW">
+    <img id="sspg_logo_bottom" src="graphics/loga_sspw_wrs.png" alt="Logo SSPW">
 </div>
 <div class="SO">
     <img id="shoutout_bartek" src="graphics/Shoutout_Bartosz_Giza.png" alt="BartoszGiza">
