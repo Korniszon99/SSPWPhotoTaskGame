@@ -70,5 +70,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
 <div class="loga">
     <img id="sspg_logo_bottom" src="graphics/02_LOGOSSPW_WYPEŁNIENIE-PODSTAWOWE_RGB_RASTER.png" alt="Logo SSPG">
 </div>
+<div class="SO">
+    <img id="shoutout_bartek" src="Shoutout_Bartosz_Giza.png" alt="BartoszGiza">
+</div>
 </body>
 </html>
