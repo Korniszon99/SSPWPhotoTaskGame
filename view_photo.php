@@ -38,7 +38,7 @@ if (!$photo) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo trans('view_h'); ?></title> <!-- Użyj klucza 'view_h' -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="majowka.css">
 </head>
 
 <body>
