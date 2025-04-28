@@ -22,7 +22,7 @@ return [
     'gallery_bt3' => 'Powrót do menu głównego',
     'index_title' => 'Strona główna',
     'index_h1' => 'Stary Student i Może… Mazury! - gra fotograficzna',
-    'index_p' => 'Witaj, wylosuj zadania, rób zdjęcia i baw się dobrze',
+    'index_p' => 'Wylosuj zadania, rób zdjęcia i baw się dobrze',
     'index_login' => 'Jesteś zalogowany jako ',
     'index_dashboard' => 'Przejdź do dashboardu',
     'register' => 'Rejestracja',
