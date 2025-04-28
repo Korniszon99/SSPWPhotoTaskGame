@@ -36,7 +36,6 @@ $task = $_SESSION['task'];
 </div>
 <div class="loga">
     <img id="sspg_logo_bottom" src="graphics/02_LOGOSSPW_WYPEŁNIENIE-PODSTAWOWE_RGB_RASTER.png" alt="Logo SSPG">
-    <img id="fut_logo_bottom" src="graphics/logo-FUT-PL-poziom-kolor-RGB.png" alt="Logo FUT">
 </div>
 </body>
 </html>
