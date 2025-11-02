@@ -1,0 +1,463 @@
+{
+  "@@locale": "en",
+  "locale": "en",
+  "fut": "Students' Union Of Polish Universities of Technology",
+  "appTitleFull": "FUT Photo Game",
+  "appTitle": "Photo Game",
+  "login": "Log in",
+  "signup": "Sign up",
+  "welcomeMessage": "Welcome! Draw tasks, take photos and have fun",
+  "galleryLoadError": "An error occurred while loading the gallery.",
+  "gallery": "Photo gallery",
+  "gallerySubtitle": "All photos uploaded by participants",
+  "sort": "Sort",
+  "filters": "Filters",
+  "newest": "Newest",
+  "oldest": "Oldest",
+  "lowestRating": "Lowest rated",
+  "highestRating": "Highest rated",
+  "task": "Task",
+  "taskPhoto": "Task photo",
+  "all": "All",
+  "minRating": "Min. rating",
+  "filter": "Apply filters",
+  "clearFilters": "Clear filters",
+  "noPhotosFound": "No photos found.",
+  "noPhotosFoundDescription": "No photos matching the specified criteria were found.",
+  "galleryEmpty": "The gallery is still empty. Be the first and upload a photo!",
+  "ratingCount": "{count, plural, =0{No ratings} =1{{avg} ({count} rating)} other{{avg} ({count} ratings)}}",
+  "@ratingCount": {
+    "description": "Number of ratings",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "avg": {
+        "type": "String"
+      }
+    }
+  },
+  "ratingCountWithoutAvg": "{count, plural, =0{No ratings} =1{({count} rating)} other{({count} ratings)}}",
+  "@ratingCountWithoutAvg": {
+    "description": "Number of ratings",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "yourRating": "Your rating",
+  "rate": "Rate this photo",
+  "ratingDisabled": "Rating is currently disabled.",
+  "previous": "Previous",
+  "next": "Next",
+  "welcome": "Welcome, {username}!",
+  "@welcome": {
+    "description": "User greeting",
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "dashboardSubtitle": "Here's a summary of your activity in the game",
+  "finished": "Completed",
+  "pending": "To do",
+  "total": "Total",
+  "photosAddingDisabled": "Adding photos is currently disabled.",
+  "photoRateLimitReached": "Too many uploads! Try again in {count, plural, one{{count} second} other{{count} seconds}}.",
+  "@photoRateLimitReached": {
+    "description": "Photo upload rate limit message",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "invalidCSRFToken": "Invalid CSRF token!",
+  "taskNotAssigned": "You don't have this task assigned.",
+  "taskAlreadyCompleted": "This task has already been completed.",
+  "photoNoFile": "No file selected or an error occurred during upload.",
+  "photoMaxSizeExceeded": "File is too large. Maximum size is {size}.",
+  "@photoMaxSizeExceeded": {
+    "description": "Maximum file size exceeded message",
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "photoInvalidType": "Invalid file type. Allowed types: {types}.",
+  "@photoInvalidType": {
+    "description": "Invalid file type message",
+    "placeholders": {
+      "types": {
+        "type": "String"
+      }
+    }
+  },
+  "photoCompressError": "Failed to process the photo.",
+  "photoUploadError": "An error occurred while uploading the photo.",
+  "photoUploadSuccess": "Photo uploaded successfully!",
+  "unknownMethod": "Unknown method",
+  "unknownRatingValue": "Unknown rating value",
+  "drawTaskRateLimitReached": "Too many draws! Try again in {count, plural, one{{count} second} other{{count} seconds}}.",
+  "@drawTaskRateLimitReached": {
+    "description": "Task draw rate limit message",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "drawTaskLimit": "You have {count} tasks without uploaded photos. Upload photos before drawing new tasks.",
+  "@drawTaskLimit": {
+    "description": "Task draw limit message",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noTasksAvailable": "No tasks available to draw.",
+  "allTasksDrawn": "No new tasks to draw – complete your current ones first!",
+  "taskDrawError": "An error occurred while drawing a task.",
+  "accessDenied": "Access to Admin Panel denied!",
+  "cannotDeleteOwnAccount": "You cannot delete your own account from the admin panel!",
+  "noUserFound": "User not found.",
+  "userDeleted": "User {username} has been deleted.",
+  "@userDeleted": {
+    "description": "User deletion confirmation",
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "userDeleteError": "An error occurred while deleting the user.",
+  "invalidParameters": "Invalid parameters.",
+  "noTaskFound": "Task not found.",
+  "taskDeleted": "Task has been deleted.",
+  "taskDeletedSummary": "Also deleted {assigned} assignments, {completed} completed tasks and {photos} related photos.",
+  "@taskDeletedSummary": {
+    "description": "Summary of deleted task-related elements",
+    "placeholders": {
+      "assigned": {
+        "type": "int"
+      },
+      "completed": {
+        "type": "int"
+      },
+      "photos": {
+        "type": "int"
+      }
+    }
+  },
+  "taskDeleteError": "An error occurred while deleting the task.",
+  "photoDeleted": "Photo has been deleted.",
+  "photoDeleteError": "An error occurred while deleting the photo.",
+  "usersLoadError": "An error occurred while loading users.",
+  "adminPanel": "Admin Panel",
+  "adminPanelSubtitle": "Manage users and data",
+  "users": "Users",
+  "user": "User",
+  "tasks": "Tasks",
+  "photos": "Photos",
+  "userList": "User list",
+  "search": "Search",
+  "searchByIdOrUsername": "Search by ID or username",
+  "clearSearch": "Clear search",
+  "usersSearchResults": "Found {count, plural, one{{count} user} other{{count} users}} for query: \"<strong>{query}</strong>\"",
+  "@usersSearchResults": {
+    "description": "User search results",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "noUsersFound": "No users found.",
+  "noUsers": "No users.",
+  "tryOtherSearch": "Try using a different query or <a href=\"panel.php\">clear search</a>",
+  "username": "Username",
+  "assigned": "Assigned",
+  "completed": "Completed",
+  "actions": "Actions",
+  "edit": "Edit",
+  "delete": "Delete",
+  "save": "Save",
+  "confirmUserDelete": "Are you sure you want to delete user {username}? This action is irreversible.",
+  "@confirmUserDelete": {
+    "description": "User deletion confirmation",
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "you": "You",
+  "backToDashboard": "← Back to dashboard",
+  "codeGenerationError": "An error occurred while generating a new code.",
+  "codeCantBeEmpty": "Code cannot be empty.",
+  "error": "Error",
+  "settingsSaved": "Settings have been saved.",
+  "settingsSaveError": "An error occurred while saving settings. ({error})",
+  "@settingsSaveError": {
+    "description": "Settings save error message",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "settings": "System settings",
+  "settingsSubtitle": "Manage features available to users",
+  "accessCode": "Event access code",
+  "accessCodeDescription": "You will receive the access code from the event organizers",
+  "actualAccessCode": "Current access code",
+  "shareCode": "Share this code with event participants",
+  "copyCode": "Copy code",
+  "generateNewCode": "Generate new code",
+  "regenerateCodeWarning": "Are you sure you want to generate a new code? The old code will stop working!",
+  "noAccessCode": "No active access code.",
+  "orSetOwnCode": "Or set your own code",
+  "codeInputTitle": "4-20 characters (letters and numbers)",
+  "exampleCode": "e.g. FUT2025",
+  "setCode": "Set code",
+  "invalidCodeFormat": "Code must contain 4-20 characters, only letters and numbers.",
+  "requireAccessCode": "Require access code",
+  "requireAccessCodeDescription": "Require code for login and registration",
+  "requireAccessCodeDescriptionSubtitle": "When enabled, users must provide an access code to log in or register",
+  "userRegistration": "User registration",
+  "userRegistrationDescription": "Allow new user registration",
+  "userRegistrationDescriptionSubtitle": "When disabled, new users will not be able to register",
+  "userLogin": "User login",
+  "userLoginDescription": "Allow regular user login",
+  "userLoginDescriptionSubtitle": "When disabled, only administrators will be able to log in and use the application",
+  "photoUploads": "Photo uploads",
+  "photoUploadsDescription": "Allow uploading photos for tasks",
+  "photoUploadsDescriptionSubtitle": "When disabled, users will not be able to upload photos for tasks",
+  "photoRatings": "Photo ratings",
+  "photoRatingsDescription": "Allow rating photos",
+  "photoRatingsDescriptionSubtitle": "When disabled, users will not be able to rate photos",
+  "saveSettings": "Save settings",
+  "backToAdminPanel": "← Back to admin panel",
+  "copiedToClipboard": "✓ Copied to clipboard!",
+  "copyError": "Error copying to clipboard: {error}",
+  "@copyError": {
+    "description": "Clipboard copy error message",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "tasksLoadError": "An error occurred while loading tasks.",
+  "taskDescriptionCannotBeEmpty": "Task description cannot be empty.",
+  "taskCreated": "Task has been created.",
+  "taskCreationError": "An error occurred while creating the task.",
+  "taskUpdated": "Task has been updated.",
+  "taskUpdateError": "An error occurred while updating the task.",
+  "manageTasks": "Task management",
+  "manageTasksSubtitle": "Create, edit and delete tasks",
+  "createNewTask": "Create new task",
+  "taskPlaceholder": "Enter task description...",
+  "createTask": "Create task",
+  "taskList": "Task list ({count})",
+  "@taskList": {
+    "description": "Task list header with task count",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noTasks": "No tasks",
+  "createSomeTasks": "Add your first task using the form above.",
+  "timesAssigned": "Times assigned",
+  "timesCompleted": "Times completed",
+  "confirmTaskDelete": "Are you sure you want to delete this task?\n\nIt will be deleted along with:\n- {assigned} assignments\n- {completed} completions (with photos)\n\nThis operation is irreversible!",
+  "@confirmTaskDelete": {
+    "description": "Task deletion confirmation with summary of related elements",
+    "placeholders": {
+      "assigned": {
+        "type": "int"
+      },
+      "completed": {
+        "type": "int"
+      }
+    }
+  },
+  "taskHasCompletionsWarning": "Task has {count, plural, one{{count} completion} other{{count} completions}} - deleting will result in loss of photos!",
+  "@taskHasCompletionsWarning": {
+    "description": "Warning about deleting task with completions",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "errorOccurred": "An error occurred: {error} ",
+  "@errorOccurred": {
+    "description": "Error message",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "usernameCantBeEmpty": "Username cannot be empty.",
+  "usernameChanged": "Username has been changed.",
+  "cannotChangeOwnPermissions": "You cannot change your own permissions!",
+  "adminStatusChanged": "Admin status has been changed!",
+  "adminStatusChangeError": "An error occurred while changing admin status.",
+  "allFieldsRequired": "All fields are required.",
+  "passwordsDoNotMatch": "Passwords do not match.",
+  "passwordChanged": "Password has been changed!",
+  "passwordChangeError": "An error occurred while changing the password.",
+  "editingUser": "Editing user {username}",
+  "@editingUser": {
+    "description": "User edit page header",
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "changingUsername": "Changing username",
+  "changingPassword": "Changing user password",
+  "settingNewPasswordInfo": "You can set a new password for this user. The user will be able to log in with the new password.",
+  "newPassword": "New password",
+  "enterNewPassword": "Enter new password",
+  "confirmPassword": "Confirm password",
+  "confirmNewPassword": "Confirm new password",
+  "changePassword": "Change password",
+  "adminPermissions": "Admin permissions",
+  "actualStatus": "Current Status",
+  "admin": "Administrator",
+  "revokePermissions": "Revoke permissions",
+  "grantPermissions": "Grant permissions",
+  "userPhotos": "User photos ({count})",
+  "@userPhotos": {
+    "description": "User photos section header in admin panel with photo count",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noUserPhotos": "User hasn't uploaded any photos yet.",
+  "photo": "Photo",
+  "confirmPhotoDelete": "Are you sure you want to delete this photo?",
+  "deleteUser": "Delete user",
+  "editingTask": "Editing task #{taskId}",
+  "@editingTask": {
+    "description": "Task edit page header",
+    "placeholders": {
+      "taskId": {
+        "type": "int"
+      }
+    }
+  },
+  "taskStats": "Task statistics",
+  "taskAlreadyCompletedStats": "This task has already been completed {count, plural, one{{count} time} other{{count} times}}.\nChanging the description will not affect already uploaded photos.",
+  "@taskAlreadyCompletedStats": {
+    "description": "Information about number of task completions",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "editTaskDescription": "Edit task description",
+  "backToTaskList": "← Back to task list",
+  "deleteTask": "Delete task",
+  "loginRateLimitReached": "Too many login attempts! Try again in {count, plural, one{{count} second} other{{count} seconds}}.",
+  "@loginRateLimitReached": {
+    "description": "Login rate limit message",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "codeIsRequired": "Access code is required!",
+  "invalidCode": "Invalid access code!",
+  "loginDisabled": "Login is currently disabled. Only administrators can log in.",
+  "loggedIn": "Logged in successfully",
+  "invalidCredentials": "Invalid username or password. If you forgot your password, contact the Presidium.",
+  "loginError": "An error occurred during login. Try again later.",
+  "loggingIn": "Sign In",
+  "password": "Password",
+  "backToMainPage": "← Back to main page",
+  "registerDisabled": "Registration is currently disabled.",
+  "usernameTaken": "Username is already taken.",
+  "registerError": "An error occurred during registration. Try again later.",
+  "registered": "Registered successfully",
+  "registering": "Sign Up",
+  "gameDisabled": "The game is currently disabled. Only administrators can use the application.",
+  "dashboard": "Dashboard",
+  "drawTask": "Draw task",
+  "drawAgain": "Draw another",
+  "yourTasks": "Your tasks",
+  "myTasks": "My tasks",
+  "userRanking": "User ranking",
+  "photoRanking": "Photo ranking",
+  "photoRankingTitle": "Best rated photos",
+  "photoRankingDescription": "Photo ranking by participant ratings",
+  "logout": "Log out",
+  "noTasksAssigned": "You have no assigned tasks",
+  "noTasksAssignedDescription": "Select <a href=\"/photo_game/actions/draw_task.php\"><span class=\"menu-icon\">🎲</span><span>Draw task</span></a> from the menu to draw your first task!",
+  "selectPhoto": "Select photo",
+  "submit": "Submit",
+  "rankingLoadError": "An error occurred while loading the ranking.",
+  "userRankingDescription": "Top game participants by number of completed tasks",
+  "yourPosition": "Your position",
+  "congratulations": "Congratulations!",
+  "youAreTopUser": "You are in {position} place in the user ranking!",
+  "@youAreTopUser": {
+    "description": "Information about user position in ranking",
+    "placeholders": {
+      "position": {
+        "type": "int"
+      }
+    }
+  },
+  "rankingEmpty": "Ranking is empty.",
+  "userRankingEmptyDescription": "Be the first! Complete tasks and get first place.",
+  "photoRankingEmptyDescription": "No rated photos. Rate other participants' photos so they appear in the ranking.",
+  "goToGallery": "Go to gallery",
+  "photoNotFound": "Photo not found.",
+  "photoLoadError": "An error occurred while loading the photo.",
+  "taskLoadError": "An error occurred while loading the task.",
+  "photoPreview": "Photo preview",
+  "photoInTop": "This photo is in TOP {position}!",
+  "@photoInTop": {
+    "description": "Information about photo position in ranking",
+    "placeholders": {
+      "position": {
+        "type": "int"
+      }
+    }
+  },
+  "photoInTopSpecial": "{count, plural, one{🎉 Best rated photo in gallery} =2{⭐ Second place in ranking} =3{⭐ Third place in ranking} other{unknown}}!",
+  "@photoInTopSpecial": {
+    "description": "Special information about photo position in ranking for 1st, 2nd and 3rd place",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "taskDescription": "Task description",
+  "author": "Author",
+  "dateCompleted": "Completion date",
+  "backToGallery": "← Back to gallery",
+  "seeRanking": "See ranking",
+  "newTaskAssigned": "New task drawn. Good luck!",
+  "yourNewTask": "Your new task",
+  "newTaskHint": "You can upload a photo in the <a href=\"task_list.php\">Your tasks</a> tab."
+}

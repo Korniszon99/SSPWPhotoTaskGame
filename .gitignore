@@ -1,3 +1,6 @@
-hasloftp.txt
-ZjazdFUT_zdjęcia/
-uploads
+photo_game/database/database.sqlite
+photo_game/database/database.sql
+photo_game/database/database.sqlite-shm
+photo_game/database/database.sqlite-wal
+photo_game/uploads
+.idea

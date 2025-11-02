@@ -1,0 +1,463 @@
+{
+  "@@locale": "pl",
+  "locale": "pl",
+  "fut": "Forum Uczelni Technicznych",
+  "appTitleFull": "FUT Photo Game",
+  "appTitle": "Photo Game",
+  "login": "Zaloguj się",
+  "signup": "Zarejestruj się",
+  "welcomeMessage": "Witaj! Wylosuj zadania, rób zdjęcia i baw się dobrze",
+  "galleryLoadError": "Wystąpił błąd podczas ładowania galerii.",
+  "gallery": "Galeria zdjęć",
+  "gallerySubtitle": "Wszystkie zdjęcia przesłane przez uczestników",
+  "sort": "Sortuj",
+  "filters": "Filtry",
+  "newest": "Najnowsze",
+  "oldest": "Najstarsze",
+  "lowestRating": "Najniżej oceniane",
+  "highestRating": "Najwyżej oceniane",
+  "task": "Zadanie",
+  "taskPhoto": "Zdjęcie zadania",
+  "all": "Wszystkie",
+  "minRating": "Min. ocena",
+  "filter": "Zastosuj filtry",
+  "clearFilters": "Wyczyść filtry",
+  "noPhotosFound": "Brak zdjęć.",
+  "noPhotosFoundDescription": "Nie znaleziono zdjęć spełniających podane kryteria.",
+  "galleryEmpty": "Galeria jest jeszcze pusta. Bądź pierwszy i prześlij zdjęcie!",
+  "ratingCount": "{count, plural, =0{Brak ocen} =1{{avg} ({count} ocena)} few{{avg} ({count} oceny)} other{{avg} ({count} ocen)}}",
+  "@ratingCount": {
+    "description": "Liczba ocen",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "avg": {
+          "type": "String"
+      }
+    }
+  },
+  "ratingCountWithoutAvg": "{count, plural, =0{Brak ocen} =1{({count} ocena)} few{({count} oceny)} other{({count} ocen)}}",
+  "@ratingCountWithoutAvg": {
+    "description": "Liczba ocen",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "yourRating": "Twoja ocena",
+  "rate": "Oceń to zdjęcie",
+  "ratingDisabled": "Ocenianie jest obecnie wyłączone.",
+  "previous": "Poprzednia",
+  "next": "Następna",
+  "welcome": "Witaj, {username}!",
+  "@welcome": {
+    "description": "Powitanie użytkownika",
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "dashboardSubtitle": "Oto podsumowanie Twojej aktywności w grze",
+  "finished": "Ukończone",
+  "pending": "Do zrobienia",
+  "total": "Razem",
+  "photosAddingDisabled": "Dodawanie zdjęć jest obecnie wyłączone.",
+  "photoRateLimitReached": "Za dużo uploadów! Spróbuj ponownie za {count, plural, one{{count} sekundę} few{{count} sekundy} other{{count} sekund}}.",
+  "@photoRateLimitReached": {
+    "description": "Komunikat o osiągnięciu limitu uploadów zdjęć",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "invalidCSRFToken": "Nieprawidłowy token CSRF!",
+  "taskNotAssigned": "Nie masz przypisanego tego zadania.",
+  "taskAlreadyCompleted": "To zadanie zostało już ukończone.",
+  "photoNoFile": "Nie wybrano pliku lub wystąpił błąd podczas przesyłania.",
+  "photoMaxSizeExceeded": "Plik jest za duży. Maksymalny rozmiar to {size}.",
+  "@photoMaxSizeExceeded": {
+      "description": "Komunikat o przekroczeniu maksymalnego rozmiaru pliku",
+      "placeholders": {
+        "size": {
+            "type": "String"
+        }
+    }
+  },
+  "photoInvalidType": "Nieprawidłowy typ pliku. Dozwolone typy to: {types}.",
+  "@photoInvalidType": {
+      "description": "Komunikat o nieprawidłowym typie pliku",
+      "placeholders": {
+        "types": {
+          "type": "String"
+        }
+      }
+  },
+  "photoCompressError": "Nie udało się przetworzyć zdjęcia.",
+  "photoUploadError": "Wystąpił błąd podczas przesyłania zdjęcia.",
+  "photoUploadSuccess": "Zdjęcie zostało pomyślnie przesłane!",
+  "unknownMethod": "Nieznana metoda",
+  "unknownRatingValue": "Nieznana wartość oceny",
+  "drawTaskRateLimitReached": "Zbyt wiele losowań! Spróbuj ponownie za {count, plural, one{{count} sekundę} few{{count} sekundy} other{{count} sekund}}.",
+  "@drawTaskRateLimitReached": {
+    "description": "Komunikat o osiągnięciu limitu losowań zadań",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "drawTaskLimit": "Masz {count} zadań bez przesłanego zdjęcia. Prześlij zdjęcia przed wylosowaniem nowych zadań.",
+  "@drawTaskLimit": {
+      "description": "Komunikat o osiągnięciu limitu zadań do wylosowania",
+      "placeholders": {
+        "count": {
+            "type": "int"
+        }
+      }
+  },
+  "noTasksAvailable": "Brak dostępnych zadań do wylosowania.",
+  "allTasksDrawn": "Nie ma nowych zadań do wylosowania – wykonaj najpierw bieżące!",
+  "taskDrawError": "Wystąpił błąd podczas losowania zadania.",
+  "accessDenied": "Brak dostępu do panelu Administratora!",
+  "cannotDeleteOwnAccount": "Nie możesz usunąć swojego konta z panelu admina!",
+  "noUserFound": "Nie znaleziono użytkownika.",
+  "userDeleted": "Użytkownik {username} został usunięty.",
+  "@userDeleted": {
+      "description": "Potwierdzenie usunięcia użytkownika",
+      "placeholders": {
+        "username": {
+            "type": "String"
+        }
+      }
+  },
+  "userDeleteError": "Wystąpił błąd podczas usuwania użytkownika.",
+  "invalidParameters": "Nieprawidłowe parametry.",
+  "noTaskFound": "Nie znaleziono zadania.",
+  "taskDeleted": "Zadanie zostało usunięte.",
+  "taskDeletedSummary": "Usunięto również {assigned} przypisań, {completed} ukończonych zadań i {photos} powiązanych zdjęć.",
+  "@taskDeletedSummary": {
+      "description": "Podsumowanie usuniętych elementów powiązanych z zadaniem",
+      "placeholders": {
+        "assigned": {
+            "type": "int"
+        },
+        "completed": {
+            "type": "int"
+        },
+        "photos": {
+            "type": "int"
+        }
+      }
+  },
+  "taskDeleteError": "Wystąpił błąd podczas usuwania zadania.",
+  "photoDeleted": "Zdjęcie zostało usunięte.",
+  "photoDeleteError": "Wystąpił błąd podczas usuwania zdjęcia.",
+  "usersLoadError": "Wystąpił błąd podczas ładowania użytkowników.",
+  "adminPanel": "Panel Administratora",
+  "adminPanelSubtitle": "Zarządzaj użytkownikami i danymi",
+  "users": "Użytkowników",
+  "user": "Użytkownik",
+  "tasks": "Zadań",
+  "photos": "Zdjęć",
+  "userList": "Lista użytkowników",
+  "search": "Szukaj",
+  "searchByIdOrUsername": "Szukaj według ID lub nazwy użytkownika",
+  "clearSearch": "Wyczyść wyszukiwanie",
+  "usersSearchResults": "Znaleziono {count, plural, one{{count} użytkownika} other{{count} użytkowników}} dla zapytania: \"<strong>{query}</strong>\"",
+  "@usersSearchResults": {
+    "description": "Wyniki wyszukiwania użytkowników",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "noUsersFound": "Nie znaleziono użytkowników.",
+  "noUsers": "Brak użytkowników.",
+  "tryOtherSearch": "Spróbuj użyć innego zapytania lub <a href=\"panel.php\">wyczyść wyszukiwanie</a>",
+  "username": "Nazwa użytkownika",
+  "assigned": "Przypisane",
+  "completed": "Ukończone",
+  "actions": "Akcje",
+  "edit": "Edytuj",
+  "delete": "Usuń",
+  "save": "Zapisz",
+  "confirmUserDelete": "Czy na pewno chcesz usunąć użytkownika {username}? Ta akcja jest nieodwracalna.",
+  "@confirmUserDelete": {
+      "description": "Potwierdzenie usunięcia użytkownika",
+      "placeholders": {
+        "username": {
+            "type": "String"
+        }
+      }
+  },
+  "you": "Ty",
+  "backToDashboard": "← Powrót do pulpitu",
+  "codeGenerationError": "Wystąpił błąd podczas generowania nowego kodu.",
+  "codeCantBeEmpty": "Kod nie może być pusty.",
+  "error": "Błąd",
+  "settingsSaved": "Ustawienia zostały zapisane.",
+  "settingsSaveError": "Wystąpił błąd podczas zapisywania ustawień. ({error})",
+  "@settingsSaveError": {
+      "description": "Komunikat o błędzie zapisywania ustawień",
+      "placeholders": {
+        "error": {
+            "type": "String"
+        }
+      }
+  },
+  "settings": "Ustawienia systemu",
+  "settingsSubtitle": "Zarządzaj funkcjami dostępnymi dla użytkowników",
+  "accessCode": "Kod dostępu do wydarzenia",
+  "accessCodeDescription": "Kod dostępu otrzymasz od organizatorów wydarzenia",
+  "actualAccessCode": "Aktualny kod dostępu",
+  "shareCode": "Udostępnij ten kod uczestnikom wydarzenia",
+  "copyCode": "Kopiuj kod",
+  "generateNewCode": "Wygeneruj nowy kod",
+  "regenerateCodeWarning": "Czy na pewno wygenerować nowy kod? Stary kod przestanie działać!",
+  "noAccessCode": "Brak aktywnego kodu dostępu.",
+  "orSetOwnCode": "Lub ustaw własny kod",
+  "codeInputTitle": "4-20 znaków (litery i cyfry)",
+  "exampleCode": "np. FUT2025",
+  "setCode": "Ustaw kod",
+  "invalidCodeFormat": "Kod musi zawierać 4-20 znaków, tylko litery oraz cyfry.",
+  "requireAccessCode": "Wymagaj kodu dostępu",
+  "requireAccessCodeDescription": "Wymagaj kodu przy logowaniu i rejestracji",
+  "requireAccessCodeDescriptionSubtitle": "Gdy włączone, użytkownicy muszą podać kod dostępu aby się zalogować lub zarejestrować",
+  "userRegistration": "Rejestracja użytkowników",
+  "userRegistrationDescription": "Zezwalaj na rejestrację nowych użytkowników",
+  "userRegistrationDescriptionSubtitle": "Gdy wyłączone, nowi użytkownicy nie będą mogli się zarejestrować",
+  "userLogin": "Logowanie użytkowników",
+  "userLoginDescription": "Zezwalaj na logowanie zwykłych użytkowników",
+  "userLoginDescriptionSubtitle": "Gdy wyłączone, tylko administratorzy będą mogli się zalogować i korzystać z aplikacji",
+  "photoUploads": "Przesyłanie zdjęć",
+  "photoUploadsDescription": "Zezwalaj na przesyłanie zdjęć do zadań",
+  "photoUploadsDescriptionSubtitle": "Gdy wyłączone, użytkownicy nie będą mogli przesyłać zdjęć do zadań",
+  "photoRatings": "Ocenianie zdjęć",
+  "photoRatingsDescription": "Zezwalaj na ocenianie zdjęć",
+  "photoRatingsDescriptionSubtitle": "Gdy wyłączone, użytkownicy nie będą mogli oceniać zdjęć",
+  "saveSettings": "Zapisz ustawienia",
+  "backToAdminPanel": "← Powrót do panelu admina",
+  "copiedToClipboard": "✓ Skopiowano do schowka!",
+  "copyError": "Błąd podczas kopiowania do schowka: {error}",
+  "@copyError": {
+      "description": "Komunikat o błędzie kopiowania do schowka",
+      "placeholders": {
+        "error": {
+            "type": "String"
+        }
+      }
+  },
+  "tasksLoadError": "Wystąpił błąd podczas ładowania zadań.",
+  "taskDescriptionCannotBeEmpty": "Opis zadania nie może być pusty.",
+  "taskCreated": "Zadanie zostało utworzone.",
+  "taskCreationError": "Wystąpił błąd podczas tworzenia zadania.",
+  "taskUpdated": "Zadanie zostało zaktualizowane.",
+  "taskUpdateError": "Wystąpił błąd podczas aktualizacji zadania.",
+  "manageTasks": "Zarządzanie zadaniami",
+  "manageTasksSubtitle": "Twórz, edytuj i usuwaj zadania",
+  "createNewTask": "Utwórz nowe zadanie",
+  "taskPlaceholder": "Wpisz opis zadania...",
+  "createTask": "Utwórz zadanie",
+  "taskList": "Lista zadań ({count})",
+  "@taskList": {
+      "description": "Nagłówek listy zadań z liczbą zadań",
+      "placeholders": {
+        "count": {
+            "type": "int"
+        }
+      }
+  },
+  "noTasks": "Brak zadań",
+  "createSomeTasks": "Dodaj pierwsze zadanie używając formularza powyżej.",
+  "timesAssigned": "Razy przypisane",
+  "timesCompleted": "Razy ukończone",
+  "confirmTaskDelete": "Czy na pewno chcesz usunąć to zadanie?\n\nZostanie ono usunięte razem z:\n- {assigned} przypisaniami\n- {completed} wykonaniami (ze zdjęciami)\n\nTa operacja jest nieodwracalna!",
+  "@confirmTaskDelete": {
+      "description": "Potwierdzenie usunięcia zadania z podsumowaniem powiązanych elementów",
+      "placeholders": {
+        "assigned": {
+            "type": "int"
+        },
+        "completed": {
+            "type": "int"
+        }
+      }
+  },
+  "taskHasCompletionsWarning": "Zadanie ma {count, plural, one{{count} wykonanie} few{{count} wykonania} other{{count} wykonań}} - usunięcie spowoduje utratę zdjęć!",
+  "@taskHasCompletionsWarning": {
+      "description": "Ostrzeżenie o usunięciu zadania z wykonaniami",
+      "placeholders": {
+        "count": {
+            "type": "int"
+        }
+      }
+  },
+  "errorOccurred": "Wystąpił błąd: {error} ",
+  "@errorOccurred": {
+      "description": "Komunikat o wystąpieniu błędu",
+      "placeholders": {
+        "error": {
+            "type": "String"
+        }
+      }
+  },
+  "usernameCantBeEmpty": "Nazwa użytkownika nie może być pusta.",
+  "usernameChanged": "Nazwa użytkownika została zmieniona.",
+  "cannotChangeOwnPermissions": "Nie możesz zmienić własnych uprawnień!",
+  "adminStatusChanged": "Status administratora został zmieniony!",
+  "adminStatusChangeError": "Wystąpił błąd podczas zmiany statusu administratora.",
+  "allFieldsRequired": "Wszystkie pola są wymagane.",
+  "passwordsDoNotMatch": "Hasła nie są identyczne.",
+  "passwordChanged": "Hasło zostało zmienione!",
+  "passwordChangeError": "Wystąpił błąd podczas zmiany hasła.",
+  "editingUser": "Edycja użytkownika {username}",
+  "@editingUser": {
+    "description": "Nagłówek strony edycji użytkownika",
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "changingUsername": "Zmiana nazwy użytkownika",
+  "changingPassword": "Zmiana hasła użytkownika",
+  "settingNewPasswordInfo": "Możesz ustawić nowe hasło dla tego użytkownika. Użytkownik będzie mógł się zalogować nowym hasłem.",
+  "newPassword": "Nowe hasło",
+  "enterNewPassword": "Wpisz nowe hasło",
+  "confirmPassword": "Potwierdź hasło",
+  "confirmNewPassword": "Potwierdź nowe hasło",
+  "changePassword": "Zmień hasło",
+  "adminPermissions": "Uprawnienia administratora",
+  "actualStatus": "Aktualny Status",
+  "admin": "Administrator",
+  "revokePermissions": "Cofnij uprawnienia",
+  "grantPermissions": "Nadaj uprawnienia",
+  "userPhotos": "Zdjęcia użytkownika ({count})",
+  "@userPhotos": {
+      "description": "Nagłówek sekcji zdjęć użytkownika w panelu administracyjnym z liczbą zdjęć",
+      "placeholders": {
+        "count": {
+            "type": "int"
+        }
+      }
+  },
+  "noUserPhotos": "Użytkownik nie przesłał jeszcze żadnych zdjęć.",
+  "photo": "Zdjęcie",
+  "confirmPhotoDelete": "Czy na pewno chcesz usunąć to zdjęcie?",
+  "deleteUser": "Usuń użytkownika",
+  "editingTask": "Edycja zadania #{taskId}",
+  "@editingTask": {
+      "description": "Nagłówek strony edycji zadania",
+      "placeholders": {
+        "taskId": {
+            "type": "int"
+        }
+      }
+  },
+  "taskStats": "Statystyki zadania",
+  "taskAlreadyCompletedStats": "To zadanie zostało już wykonane {count, plural, one{{count} raz} other{{count} razy}}.\nZmiana opisu nie wpłynie na już przesłane zdjęcia.",
+  "@taskAlreadyCompletedStats": {
+      "description": "Informacja o liczbie wykonań zadania",
+      "placeholders": {
+        "count": {
+            "type": "int"
+        }
+      }
+  },
+  "editTaskDescription": "Edytuj opis zadania",
+  "backToTaskList": "← Powrót do listy zadań",
+  "deleteTask": "Usuń zadanie",
+  "loginRateLimitReached": "Za dużo prób logowania! Spróbuj ponownie za {count, plural, one{{count} sekundę} few{{count} sekundy} other{{count} sekund}}.",
+  "@loginRateLimitReached": {
+    "description": "Komunikat o osiągnięciu limitu prób logowania",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "codeIsRequired": "Kod dostępu jest wymagany!",
+  "invalidCode": "Nieprawidłowy kod dostępu!",
+  "loginDisabled": "Logowanie jest obecnie wyłączone. Tylko administratorzy mogą się zalogować.",
+  "loggedIn": "Zalogowano pomyślnie",
+  "invalidCredentials": "Nieprawidłowa nazwa użytkownika lub hasło. Jeśli zapomniałeś hasła, skontaktuj się z Prezydium.",
+  "loginError": "Wystąpił błąd podczas logowania. Spróbuj ponownie później.",
+  "loggingIn": "Logowanie",
+  "password": "Hasło",
+  "backToMainPage": "← Powrót na stronę główną",
+  "registerDisabled": "Rejestracja jest obecnie wyłączona.",
+  "usernameTaken": "Nazwa użytkownika jest już zajęta.",
+  "registerError": "Wystąpił błąd podczas rejestracji. Spróbuj ponownie później.",
+  "registered": "Zarejestrowano pomyślnie",
+  "registering": "Rejestracja",
+  "gameDisabled": "Gra jest obecnie wyłączona. Tylko administratorzy mogą korzystać z aplikacji.",
+  "dashboard": "Pulpit",
+  "drawTask": "Losuj zadanie",
+  "drawAgain": "Losuj kolejne",
+  "yourTasks": "Twoje zadania",
+  "myTasks": "Moje zadania",
+  "userRanking": "Ranking uczestników",
+  "photoRanking": "Ranking zdjęć",
+  "photoRankingTitle": "Najlepiej oceniane zdjęcia",
+  "photoRankingDescription": "Ranking zdjęć według ocen uczestników",
+  "logout": "Wyloguj się",
+  "noTasksAssigned": "Nie masz przypisanych zadań",
+  "noTasksAssignedDescription": "Wybierz opcję <a href=\"/photo_game/actions/draw_task.php\"><span class=\"menu-icon\">\uD83C\uDFB2</span><span>Losuj zadanie</span></a> w menu, aby wylosować pierwsze zadanie!",
+  "selectPhoto": "Wybierz zdjęcie",
+  "submit": "Prześlij",
+  "rankingLoadError": "Wystąpił błąd podczas ładowania rankingu.",
+  "userRankingDescription": "Najlepsi uczestnicy gry według liczby ukończonych zadań",
+  "yourPosition": "Twoja pozycja",
+  "congratulations": "Gratulacje!",
+  "youAreTopUser": "Zajmujesz {position} miejsce w rankingu uczestników!",
+  "@youAreTopUser": {
+      "description": "Informacja o pozycji użytkownika w rankingu",
+      "placeholders": {
+        "position": {
+            "type": "int"
+        }
+      }
+  },
+  "rankingEmpty": "Ranking jest pusty.",
+  "userRankingEmptyDescription": "Bądź pierwszy! Wykonaj zadania i zdobądź pierwsze miejsce.",
+  "photoRankingEmptyDescription": "Brak ocenionych zdjęć. Oceniaj zdjęcia innych uczestników, aby pojawiły się w rankingu.",
+  "goToGallery": "Przejdź do galerii",
+  "photoNotFound": "Nie znaleziono zdjęcia.",
+  "photoLoadError": "Wystąpił błąd podczas ładowania zdjęcia.",
+  "taskLoadError": "Wystąpił błąd podczas ładowania zadania.",
+  "photoPreview": "Podgląd zdjęcia",
+  "photoInTop": "To zdjęcie jest w TOP {position}!",
+  "@photoInTop": {
+    "description": "Informacja o pozycji zdjęcia w rankingu",
+    "placeholders": {
+        "position": {
+            "type": "int"
+        }
+    }
+  },
+  "photoInTopSpecial": "{count, plural, one{\uD83C\uDF89 Najlepiej oceniane zdjęcie w galerii} =2{⭐ Drugie miejsce w rankingu} =3{⭐ Trzecie miejsce w rankingu} other{unknown}}!",
+  "@photoInTopSpecial": {
+    "description": "Specjalna informacja o pozycji zdjęcia w rankingu dla 1, 2 i 3 miejsca",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "taskDescription": "Opis zadania",
+  "author": "Autor",
+  "dateCompleted": "Data wykonania",
+  "backToGallery": "← Powrót do galerii",
+  "seeRanking": "Zobacz ranking",
+  "newTaskAssigned": "Wylosowano nowe zadanie. Powodzenia!",
+  "yourNewTask": "Twoje nowe zadanie",
+  "newTaskHint": "Możesz przesłać zdjęcie w zakładce <a href=\"task_list.php\">Twoje zadania</a>."
+}
