@@ -154,7 +154,8 @@ class Database {
             $dsn = $res[0];
             $user = isset($res[1]) ? $res[1] : null;
             $pass = isset($res[2]) ? $res[2] : null;
-            return array($dsn, $user, $pass, array());
+            $options = isset($res[3]) ? $res[3] : array();
+            return array($dsn, $user, $pass, $options);
         }
 
         // 2) Azure connection strings
@@ -207,7 +208,15 @@ class Database {
             switch ($driver) {
                 case 'mysql':
                     $dsn = 'mysql:host=' . $host . ($port ? ';port=' . $port : '') . ';dbname=' . $db . ';charset=' . $charset;
-                    return array($dsn, $user, $pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES {$charset}"));
+                    $options = array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES {$charset}");
+
+                    // Azure MySQL wymaga SSL
+                    if (strpos($host, '.mysql.database.azure.com') !== false) {
+                        $options[PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT] = false;
+                        $options[PDO::MYSQL_ATTR_SSL_CA] = true;
+                    }
+
+                    return array($dsn, $user, $pass, $options);
                 case 'pgsql':
                 case 'postgres':
                 case 'postgresql':
@@ -252,20 +261,28 @@ class Database {
             case 'mysql':
                 $charset = $query['charset'] ?? (getenv('DB_CHARSET') ?: 'utf8mb4');
                 $dsn = 'mysql:host=' . $host . ($port ? ';port=' . $port : '') . ';dbname=' . $path . ';charset=' . $charset;
-                return array($dsn, $user, $pass);
+                $options = array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES {$charset}");
+
+                // Azure MySQL wymaga SSL
+                if (strpos($host, '.mysql.database.azure.com') !== false) {
+                    $options[PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT] = false;
+                    $options[PDO::MYSQL_ATTR_SSL_CA] = true;
+                }
+
+                return array($dsn, $user, $pass, $options);
             case 'pgsql':
             case 'postgres':
                 $dsn = 'pgsql:host=' . $host . ';port=' . ($port ?: '5432') . ';dbname=' . $path;
-                return array($dsn, $user, $pass);
+                return array($dsn, $user, $pass, array());
             case 'sqlsrv':
             case 'mssql':
                 $dsn = 'sqlsrv:Server=' . $host . ($port ? ',' . $port : '') . ';Database=' . $path;
-                return array($dsn, $user, $pass);
+                return array($dsn, $user, $pass, array());
             case 'sqlite':
                 // DATABASE_URL=sqlite:/absolute/path.db lub sqlite:///absolute/path.db
                 if (!empty($parts['path'])) {
                     $sqlitePath = $parts['path'];
-                    return array('sqlite:' . $sqlitePath, null, null);
+                    return array('sqlite:' . $sqlitePath, null, null, array());
                 }
                 // fallback będzie lokalny
                 break;
