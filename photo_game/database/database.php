@@ -183,7 +183,22 @@ class Database {
                 $pass = $parsed['Password'] ?? null;
                 $charset = getenv('DB_CHARSET') ?: 'utf8mb4';
                 $dsn = 'mysql:host=' . $host . ($port ? ';port=' . $port : '') . ';dbname=' . $db . ';charset=' . $charset;
-                return array($dsn, $user, $pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES {$charset}"));
+                $options = array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES {$charset}");
+
+                // Azure MySQL wymaga SSL i specjalnego formatu username
+                if (strpos($host, '.mysql.database.azure.com') !== false) {
+                    // W Azure MySQL username to tylko nazwa bez @servername
+                    if ($user && strpos($user, '@') !== false) {
+                        $user = substr($user, 0, strpos($user, '@'));
+                    }
+
+                    // Konfiguracja SSL
+                    $options[PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT] = false;
+                    $options[PDO::ATTR_EMULATE_PREPARES] = false;
+                    $dsn .= ';sslmode=require';
+                }
+
+                return array($dsn, $user, $pass, $options);
             }
             if ($this->startsWith($upper, 'POSTGRESQLCONNSTR_')) {
                 $host = $parsed['Host'] ?? $parsed['Data Source'] ?? 'localhost';
@@ -226,10 +241,20 @@ class Database {
                     $dsn = 'mysql:host=' . $host . ($port ? ';port=' . $port : '') . ';dbname=' . $db . ';charset=' . $charset;
                     $options = array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES {$charset}");
 
-                    // Azure MySQL wymaga SSL
+                    // Azure MySQL wymaga SSL i specjalnego formatu username
                     if (strpos($host, '.mysql.database.azure.com') !== false) {
+                        // W Azure MySQL username to tylko nazwa bez @servername
+                        // np. "sspw@server-fixed" -> "sspw"
+                        if ($user && strpos($user, '@') !== false) {
+                            $user = substr($user, 0, strpos($user, '@'));
+                        }
+
+                        // Konfiguracja SSL dla Azure MySQL
                         $options[PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT] = false;
-                        $options[PDO::MYSQL_ATTR_SSL_CA] = true;
+                        $options[PDO::ATTR_EMULATE_PREPARES] = false;
+
+                        // Azure MySQL wymaga SSL - dodaj do DSN
+                        $dsn .= ';sslmode=require';
                     }
 
                     return array($dsn, $user, $pass, $options);
@@ -279,10 +304,19 @@ class Database {
                 $dsn = 'mysql:host=' . $host . ($port ? ';port=' . $port : '') . ';dbname=' . $path . ';charset=' . $charset;
                 $options = array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES {$charset}");
 
-                // Azure MySQL wymaga SSL
+                // Azure MySQL wymaga SSL i specjalnego formatu username
                 if (strpos($host, '.mysql.database.azure.com') !== false) {
+                    // W Azure MySQL username to tylko nazwa bez @servername
+                    if ($user && strpos($user, '@') !== false) {
+                        $user = substr($user, 0, strpos($user, '@'));
+                    }
+
+                    // Konfiguracja SSL dla Azure MySQL
                     $options[PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT] = false;
-                    $options[PDO::MYSQL_ATTR_SSL_CA] = true;
+                    $options[PDO::ATTR_EMULATE_PREPARES] = false;
+
+                    // Azure MySQL wymaga SSL
+                    $dsn .= ';sslmode=require';
                 }
 
                 return array($dsn, $user, $pass, $options);
