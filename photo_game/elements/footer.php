@@ -2,7 +2,7 @@
 
 <footer class="footer" role="contentinfo">
     <div class="logos">
-        <a href="https://fut.edu.pl"
+        <a href="https://sspw.pl"
            target="_blank"
            rel="noopener noreferrer"
            aria-label="<?php __('fut')?>">
