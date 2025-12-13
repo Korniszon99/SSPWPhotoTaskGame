@@ -21,7 +21,13 @@ class Database {
      */
     private function __construct() {
         try {
-            $db_path = __DIR__ . '/../../../../futopack/database/database.sqlite';
+            // Lokalny plik bazy danych w katalogu projektu
+            $db_path = __DIR__ . '/database.sqlite';
+            // Upewnij się, że katalog istnieje
+            if (!is_dir(__DIR__)) {
+                mkdir(__DIR__, 0755, true);
+            }
+
             $this->pdo = new PDO('sqlite:' . $db_path);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
@@ -33,9 +39,77 @@ class Database {
             $this->pdo->exec('PRAGMA temp_store = MEMORY');
             $this->pdo->exec('PRAGMA foreign_keys = ON');
 
+            // Inicjalizacja schematu bazy danych przy pierwszym uruchomieniu
+            $this->ensureInitialized();
+
         } catch (PDOException $e) {
             error_log("Database connection error: " . $e->getMessage());
             throw new Exception("Nie można połączyć się z bazą danych");
+        }
+    }
+
+    /**
+     * Inicjalizuje schemat bazy danych jeżeli nie istnieje
+     */
+    private function ensureInitialized() {
+        // Sprawdź, czy istnieje tabela users (jako wskaźnik całego schematu)
+        $stmt = $this->pdo->query("SELECT name FROM sqlite_master WHERE type='table' AND name='users'");
+        $exists = $stmt->fetch();
+        if (!$exists) {
+            $schemaFile = __DIR__ . '/schema.sql';
+            if (!file_exists($schemaFile)) {
+                throw new Exception('Brak pliku schema.sql do inicjalizacji bazy.');
+            }
+            $schemaSql = file_get_contents($schemaFile);
+            $this->pdo->exec($schemaSql);
+        }
+
+        // Seed: utwórz konto administratora, jeśli brak użytkowników
+        $stmt = $this->pdo->query("SELECT COUNT(*) AS cnt FROM users");
+        $count = (int)$stmt->fetch()['cnt'];
+        if ($count === 0) {
+            $username = getenv('ADMIN_USERNAME') ?: 'admin';
+            $passwordPlain = getenv('ADMIN_PASSWORD') ?: 'admin';
+            $passwordHash = password_hash($passwordPlain, PASSWORD_DEFAULT);
+            $insert = $this->pdo->prepare("INSERT INTO users (username, password, is_admin) VALUES (?, ?, 1)");
+            $insert->execute([$username, $passwordHash]);
+            // Ustawienia domyślne aplikacji
+            $this->setSetting('registration_enabled', '1');
+            $this->setSetting('photo_upload_enabled', '1');
+            $this->setSetting('photo_rating_enabled', '1');
+            $this->setSetting('login_enabled', '1');
+        }
+
+        // Upewnij się, że istnieje konto administratora wg ENV (lub 'admin' domyślnie)
+        $adminUsername = getenv('ADMIN_USERNAME') ?: 'admin';
+        $adminPasswordEnv = getenv('ADMIN_PASSWORD'); // może być null
+        $checkAdmin = $this->pdo->prepare("SELECT id FROM users WHERE username = ?");
+        $checkAdmin->execute([$adminUsername]);
+        $admin = $checkAdmin->fetch();
+        if (!$admin) {
+            $passwordToSet = $adminPasswordEnv ?: 'admin';
+            $passwordHash = password_hash($passwordToSet, PASSWORD_DEFAULT);
+            $createAdmin = $this->pdo->prepare("INSERT INTO users (username, password, is_admin) VALUES (?, ?, 1)");
+            $createAdmin->execute([$adminUsername, $passwordHash]);
+        } elseif ($adminPasswordEnv !== false && $adminPasswordEnv !== null && $adminPasswordEnv !== '') {
+            // Jeśli użytkownik istnieje i podano ADMIN_PASSWORD, zaktualizuj hasło
+            $passwordHash = password_hash($adminPasswordEnv, PASSWORD_DEFAULT);
+            $updatePwd = $this->pdo->prepare("UPDATE users SET password = ? WHERE id = ?");
+            $updatePwd->execute([$passwordHash, $admin['id']]);
+        }
+
+        // Upewnij się, że istnieje kod dostępu wg ENV (lub 'demo' domyślnie)
+        // (bezpośrednio w tabeli, nie w schema.sql)
+        $accessCode = getenv('ACCESS_CODE') ?: 'demo';
+        $checkCode = $this->pdo->prepare("SELECT id, is_active FROM access_codes WHERE code = ?");
+        $checkCode->execute([$accessCode]);
+        $code = $checkCode->fetch();
+        if (!$code) {
+            $createCode = $this->pdo->prepare("INSERT INTO access_codes (code, is_active) VALUES (?, 1)");
+            $createCode->execute([$accessCode]);
+        } else if ((int)$code['is_active'] !== 1) {
+            $activate = $this->pdo->prepare("UPDATE access_codes SET is_active = 1 WHERE id = ?");
+            $activate->execute([$code['id']]);
         }
     }
 
@@ -842,7 +916,7 @@ class Database {
         $stats['completed_tasks'] = $stmt->fetch()['count'];
 
         // Rozmiar bazy danych
-        $db_path = __DIR__ . '/database.db';
+        $db_path = __DIR__ . '/database.sqlite';
         $stats['db_size_mb'] = file_exists($db_path) ? round(filesize($db_path) / 1024 / 1024, 2) : 0;
 
         return $stats;
