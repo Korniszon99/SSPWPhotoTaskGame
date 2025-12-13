@@ -225,7 +225,7 @@
   "noAccessCode": "No active access code.",
   "orSetOwnCode": "Or set your own code",
   "codeInputTitle": "4-20 characters (letters and numbers)",
-  "exampleCode": "e.g. FUT2025",
+  "exampleCode": "e.g. SSPW2025",
   "setCode": "Set code",
   "invalidCodeFormat": "Code must contain 4-20 characters, only letters and numbers.",
   "requireAccessCode": "Require access code",
