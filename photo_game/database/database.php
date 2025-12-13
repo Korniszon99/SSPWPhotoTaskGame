@@ -215,6 +215,11 @@ class Database {
             $db = getenv('DB_NAME') ?: '';
             $user = getenv('DB_USER') ?: null;
             $pass = getenv('DB_PASSWORD') ?: null;
+
+            // Dekoduj URL encoding jeśli występuje (dla Azure)
+            if ($user) $user = urldecode($user);
+            if ($pass) $pass = urldecode($pass);
+
             $charset = getenv('DB_CHARSET') ?: 'utf8mb4';
             switch ($driver) {
                 case 'mysql':
@@ -261,8 +266,8 @@ class Database {
             throw new Exception('Nieprawidłowy DATABASE_URL');
         }
         $scheme = strtolower($parts['scheme']);
-        $user = $parts['user'] ?? null;
-        $pass = $parts['pass'] ?? null;
+        $user = isset($parts['user']) ? urldecode($parts['user']) : null;
+        $pass = isset($parts['pass']) ? urldecode($parts['pass']) : null;
         $host = $parts['host'] ?? null;
         $port = $parts['port'] ?? null;
         $path = isset($parts['path']) ? ltrim($parts['path'], '/') : null;
