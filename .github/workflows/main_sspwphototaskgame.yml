@@ -52,9 +52,8 @@ jobs:
         with:
           name: php-app
 
-      - name: Unzip artifact for deployment
-        run: unzip -o release.zip
-      
+      # Nie rozpakowujemy lokalnie – wyślemy release.zip bezpośrednio do OneDeploy/ZipDeploy
+
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -62,11 +61,20 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_B4B8414F26974BE0818F237BC8ADD681 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_AA89B838B6B54C15B724CE29BB76BEE5 }}
 
+      - name: Diagnostyka OIDC – kto jestem w Azure
+        run: |
+          az account show --output jsonc || true
+
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
           app-name: 'SSPWPhotoTaskGame'
           slot-name: 'Production'
-          package: .
+          package: release.zip
+
+      - name: Link do logów Kudu (Zip/OneDeploy)
+        if: always()
+        run: |
+          echo "Sprawdź Deployment Center oraz Kudu → site/deployments po DeploymentId z powyższego kroku."
           
