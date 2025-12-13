@@ -333,6 +333,7 @@ class Database {
         return strncmp($haystack, $needle, strlen($needle)) === 0;
     }
 
+
     /**
      * Zapobiega klonowaniu instancji
      */
