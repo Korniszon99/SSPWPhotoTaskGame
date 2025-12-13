@@ -101,30 +101,64 @@ echo "<h2>💾 5. Test połączenia z bazą danych</h2>";
 echo "<div class='box'><pre>";
 
 try {
-    require_once __DIR__ . '/database/Database.php';
-
     echo "⏳ Próba połączenia z bazą...\n\n";
+
+    // Sprawdź czy plik Database.php istnieje
+    $dbFile = __DIR__ . '/database/Database.php';
+    if (!file_exists($dbFile)) {
+        throw new Exception("Brak pliku Database.php");
+    }
+
+    require_once $dbFile;
 
     $db = Database::getInstance();
     echo "✓ <span class='success'>Połączenie z bazą udane!</span>\n\n";
 
     // Sprawdź tabele
     echo "📊 Statystyki bazy danych:\n";
-    $stats = $db->getStats();
-    echo "  - Użytkownicy: <span class='success'>" . $stats['users'] . "</span>\n";
-    echo "  - Zadania: <span class='success'>" . $stats['tasks'] . "</span>\n";
-    echo "  - Ukończone zadania: <span class='success'>" . $stats['completed_tasks'] . "</span>\n";
-    echo "  - Oceny zdjęć: <span class='success'>" . $stats['photo_ratings'] . "</span>\n";
-    echo "  - Kody dostępu: <span class='success'>" . $stats['access_codes'] . "</span>\n";
+    try {
+        $stats = $db->getStats();
+        echo "  - Użytkownicy: <span class='success'>" . $stats['users'] . "</span>\n";
+        echo "  - Zadania: <span class='success'>" . $stats['tasks'] . "</span>\n";
+        echo "  - Ukończone zadania: <span class='success'>" . $stats['completed_tasks'] . "</span>\n";
+        echo "  - Oceny zdjęć: <span class='success'>" . $stats['photo_ratings'] . "</span>\n";
+        echo "  - Kody dostępu: <span class='success'>" . $stats['access_codes'] . "</span>\n";
+    } catch (Exception $e) {
+        echo "  <span class='warning'>Nie można pobrać statystyk: " . htmlspecialchars($e->getMessage()) . "</span>\n";
+    }
 
     // Sprawdź tabele
     echo "\n📋 Lista tabel w bazie:\n";
-    $tables = $db->query("SHOW TABLES")->fetchAll(PDO::FETCH_COLUMN);
-    foreach ($tables as $table) {
-        echo "  - $table\n";
+    try {
+        // Próbuj najpierw MySQL
+        try {
+            $tables = $db->query("SHOW TABLES")->fetchAll(PDO::FETCH_COLUMN);
+        } catch (Exception $e1) {
+            // Jeśli nie zadziałało, spróbuj SQLite
+            try {
+                $tables = $db->query("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name")->fetchAll(PDO::FETCH_COLUMN);
+            } catch (Exception $e2) {
+                // Jeśli ani jedno ani drugie, spróbuj PostgreSQL
+                try {
+                    $tables = $db->query("SELECT tablename FROM pg_tables WHERE schemaname = 'public'")->fetchAll(PDO::FETCH_COLUMN);
+                } catch (Exception $e3) {
+                    $tables = [];
+                }
+            }
+        }
+
+        if (count($tables) > 0) {
+            foreach ($tables as $table) {
+                echo "  - $table\n";
+            }
+        } else {
+            echo "  <span class='warning'>Brak tabel lub nieobsługiwany typ bazy</span>\n";
+        }
+    } catch (Exception $e) {
+        echo "  <span class='warning'>Nie można pobrać listy tabel: " . htmlspecialchars($e->getMessage()) . "</span>\n";
     }
 
-} catch (Exception $e) {
+} catch (Throwable $e) {
     echo "✗ <span class='error'>Błąd połączenia z bazą danych:</span>\n\n";
     echo "<span class='error'>" . htmlspecialchars($e->getMessage()) . "</span>\n\n";
     echo "Stack trace:\n";
@@ -155,14 +189,35 @@ echo "<h2>🔧 7. Config.php - wartości</h2>";
 echo "<div class='box'><pre>";
 
 try {
-    require_once __DIR__ . '/config/config.php';
+    $configFile = __DIR__ . '/config/config.php';
+    if (!file_exists($configFile)) {
+        throw new Exception("Brak pliku config.php");
+    }
 
-    echo "ADMIN_USERNAME: <span class='success'>" . ADMIN_USERNAME . "</span>\n";
-    echo "ADMIN_PASSWORD: <span class='success'>[" . strlen(ADMIN_PASSWORD) . " chars]</span>\n";
-    echo "ACCESS_CODE: <span class='success'>" . ACCESS_CODE . "</span>\n";
+    require_once $configFile;
 
-} catch (Exception $e) {
+    if (defined('ADMIN_USERNAME')) {
+        echo "ADMIN_USERNAME: <span class='success'>" . ADMIN_USERNAME . "</span>\n";
+    } else {
+        echo "ADMIN_USERNAME: <span class='warning'>NOT DEFINED</span>\n";
+    }
+
+    if (defined('ADMIN_PASSWORD')) {
+        echo "ADMIN_PASSWORD: <span class='success'>[" . strlen(ADMIN_PASSWORD) . " chars]</span>\n";
+    } else {
+        echo "ADMIN_PASSWORD: <span class='warning'>NOT DEFINED</span>\n";
+    }
+
+    if (defined('ACCESS_CODE')) {
+        echo "ACCESS_CODE: <span class='success'>" . ACCESS_CODE . "</span>\n";
+    } else {
+        echo "ACCESS_CODE: <span class='warning'>NOT DEFINED</span>\n";
+    }
+
+} catch (Throwable $e) {
     echo "<span class='error'>Błąd ładowania config.php: " . htmlspecialchars($e->getMessage()) . "</span>\n";
+    echo "\nStack trace:\n";
+    echo "<span class='error'>" . htmlspecialchars($e->getTraceAsString()) . "</span>\n";
 }
 
 echo "</pre></div>";
