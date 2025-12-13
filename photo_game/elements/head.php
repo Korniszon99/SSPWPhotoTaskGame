@@ -16,7 +16,7 @@ if (!$db->isLoginEnabled() && !$db->isUserAdmin($_SESSION['user_id'])) {
     <link rel="manifest" href="/photo_game/manifest.json">
     <meta name="theme-color" content="#8b5cf6">
     <link rel="apple-touch-icon" href="/photo_game/graphics/logo-fut.png">
-    <title>FUT Photo Game</title>
+    <title>SSPW Photo Game</title>
     <link rel="stylesheet" href="/photo_game/style.css">
     <script src="/photo_game/js/pwa.js" defer></script>
 </head>
