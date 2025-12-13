@@ -24,6 +24,22 @@ Aplikacja wspiera konfigurację poprzez zmienne środowiskowe (np. w Azure App S
 
 Wspierane zmienne środowiskowe:
 
+- Konfiguracja bazy danych (kolejność priorytetów):
+  1) `DATABASE_URL` – pełny URL połączenia (np. `mysql://user:pass@host:3306/db?charset=utf8mb4`, `pgsql://...`, `sqlsrv://...`, `sqlite:///absolute/path/to.db`).
+  2) Azure Connection Strings (automatyczna detekcja):
+     - dowolna zmienna zaczynająca się od: `MYSQLCONNSTR_`, `POSTGRESQLCONNSTR_`, `SQLCONNSTR_`, `SQLAZURECONNSTR_`.
+       Aplikacja sparsuje wartości w formacie `Key=Value;Key=Value;...` (np. `Data Source=...;User Id=...;Password=...;Database=...`).
+  3) Zestaw klasycznych zmiennych:
+     - `DB_DRIVER` – `mysql` | `pgsql` | `postgres` | `postgresql` | `sqlsrv` | `mssql` | `sqlite`
+     - `DB_HOST` – host serwera DB
+     - `DB_PORT` – port serwera DB
+     - `DB_NAME` – nazwa bazy danych
+     - `DB_USER` – użytkownik bazy danych
+     - `DB_PASSWORD` – hasło
+     - `DB_CHARSET` – np. `utf8mb4` (dla MySQL)
+     - `DB_PATH` – pełna ścieżka do pliku przy `DB_DRIVER=sqlite`
+  4) Fallback: jeśli żadna z powyższych nie jest ustawiona – użyta zostanie lokalna baza SQLite w repo: `photo_game/database/database.sqlite` (tworzona automatycznie).
+
 - `ADMIN_USERNAME` – login konta administratora.
   - Domyślna wartość: `admin`
 - `ADMIN_PASSWORD` – hasło konta administratora.
@@ -42,6 +58,21 @@ W Azure Portal → App Service → Configuration → Application settings dodaj 
 - Name: `ADMIN_USERNAME`, Value: `twoj_admin`
 - Name: `ADMIN_PASSWORD`, Value: `bardzo_silne_haslo`
 - Name: `ACCESS_CODE`, Value: `FUT2025`
+
+Do bazy danych na Azure możesz użyć jednej z metod:
+
+- Azure Connection String (zalecane – dodaj w sekcji Connection strings):
+  - MySQL: utwórz wpis `MYSQLCONNSTR_MAIN` z wartością np.: `Data Source=yourmysqlhost.mysql.database.azure.com;Database=photogame;User Id=user@yourmysqlhost;Password=SuperHaslo123;Port=3306`
+  - PostgreSQL: `POSTGRESQLCONNSTR_MAIN` np.: `Host=yourpg.postgres.database.azure.com;Database=photogame;User Id=user@yourpg;Password=SuperHaslo123;Port=5432`
+  - Azure SQL: `SQLAZURECONNSTR_MAIN` np.: `Data Source=tcp:your-sql.database.windows.net,1433;Initial Catalog=photogame;User Id=user;Password=SuperHaslo123`
+
+- Lub `DATABASE_URL`, np.:
+  - `mysql://user:SuperHaslo123@yourmysqlhost.mysql.database.azure.com:3306/photogame?charset=utf8mb4`
+  - `pgsql://user:SuperHaslo123@yourpg.postgres.database.azure.com:5432/photogame`
+  - `sqlsrv://user:SuperHaslo123@your-sql.database.windows.net:1433/photogame`
+
+- Lub zestaw `DB_*`:
+  - `DB_DRIVER=mysql`, `DB_HOST=yourmysqlhost.mysql.database.azure.com`, `DB_PORT=3306`, `DB_NAME=photogame`, `DB_USER=user@yourmysqlhost`, `DB_PASSWORD=SuperHaslo123`, `DB_CHARSET=utf8mb4`
 
 Zapisz zmiany i zrestartuj aplikację. Przy starcie ustawienia zostaną zastosowane.
 

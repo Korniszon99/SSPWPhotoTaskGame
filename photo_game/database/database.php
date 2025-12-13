@@ -17,30 +17,33 @@ class Database {
     }
 
     /**
-     * Konstruktor - nawiązuje połączenie i konfiguruje SQLite
+     * Konstruktor - nawiązuje połączenie (Azure DB / zewnętrzna) lub lokalne SQLite jako fallback
      */
     private function __construct() {
         try {
-            // Lokalny plik bazy danych w katalogu projektu
-            $db_path = __DIR__ . '/database.sqlite';
-            // Upewnij się, że katalog istnieje
-            if (!is_dir(__DIR__)) {
-                mkdir(__DIR__, 0755, true);
-            }
+            $dsnData = $this->buildDsnFromEnv();
+            $dsn = $dsnData[0];
+            $user = isset($dsnData[1]) ? $dsnData[1] : null;
+            $pass = isset($dsnData[2]) ? $dsnData[2] : null;
+            $options = isset($dsnData[3]) ? $dsnData[3] : [];
 
-            $this->pdo = new PDO('sqlite:' . $db_path);
+            $this->pdo = new PDO($dsn, $user, $pass, $options);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
-            // Optymalizacja wydajności SQLite
-            $this->pdo->exec('PRAGMA journal_mode = WAL');
-            $this->pdo->exec('PRAGMA synchronous = NORMAL');
-            $this->pdo->exec('PRAGMA cache_size = 10000');
-            $this->pdo->exec('PRAGMA temp_store = MEMORY');
-            $this->pdo->exec('PRAGMA foreign_keys = ON');
+            $driver = $this->pdo->getAttribute(PDO::ATTR_DRIVER_NAME);
 
-            // Inicjalizacja schematu bazy danych przy pierwszym uruchomieniu
-            $this->ensureInitialized();
+            // Ustawienia specyficzne dla SQLite
+            if ($driver === 'sqlite') {
+                $this->pdo->exec('PRAGMA journal_mode = WAL');
+                $this->pdo->exec('PRAGMA synchronous = NORMAL');
+                $this->pdo->exec('PRAGMA cache_size = 10000');
+                $this->pdo->exec('PRAGMA temp_store = MEMORY');
+                $this->pdo->exec('PRAGMA foreign_keys = ON');
+            }
+
+            // Inicjalizacja/seed (schemat tylko dla SQLite)
+            $this->ensureInitialized($driver);
 
         } catch (PDOException $e) {
             error_log("Database connection error: " . $e->getMessage());
@@ -49,68 +52,285 @@ class Database {
     }
 
     /**
-     * Inicjalizuje schemat bazy danych jeżeli nie istnieje
+     * Inicjalizuje schemat/seedy. Schemat ładowany tylko dla SQLite.
      */
-    private function ensureInitialized() {
-        // Sprawdź, czy istnieje tabela users (jako wskaźnik całego schematu)
-        $stmt = $this->pdo->query("SELECT name FROM sqlite_master WHERE type='table' AND name='users'");
-        $exists = $stmt->fetch();
-        if (!$exists) {
-            $schemaFile = __DIR__ . '/schema.sql';
-            if (!file_exists($schemaFile)) {
-                throw new Exception('Brak pliku schema.sql do inicjalizacji bazy.');
+    private function ensureInitialized($driver) {
+        // 1) Schemat tylko dla SQLite (plik w repo)
+        if ($driver === 'sqlite') {
+            $usersExists = false;
+            try {
+                $stmt = $this->pdo->query("SELECT name FROM sqlite_master WHERE type='table' AND name='users'");
+                $usersExists = (bool)$stmt->fetch();
+            } catch (Throwable $e) {
+                $usersExists = false;
             }
-            $schemaSql = file_get_contents($schemaFile);
-            $this->pdo->exec($schemaSql);
+            if (!$usersExists) {
+                $schemaFile = __DIR__ . '/schema.sql';
+                if (!file_exists($schemaFile)) {
+                    throw new Exception('Brak pliku schema.sql do inicjalizacji bazy.');
+                }
+                $schemaSql = file_get_contents($schemaFile);
+                $this->pdo->exec($schemaSql);
+            }
         }
 
-        // Seed: utwórz konto administratora, jeśli brak użytkowników
-        $stmt = $this->pdo->query("SELECT COUNT(*) AS cnt FROM users");
-        $count = (int)$stmt->fetch()['cnt'];
-        if ($count === 0) {
-            $username = getenv('ADMIN_USERNAME') ?: 'admin';
-            $passwordPlain = getenv('ADMIN_PASSWORD') ?: 'admin';
-            $passwordHash = password_hash($passwordPlain, PASSWORD_DEFAULT);
-            $insert = $this->pdo->prepare("INSERT INTO users (username, password, is_admin) VALUES (?, ?, 1)");
-            $insert->execute([$username, $passwordHash]);
-            // Ustawienia domyślne aplikacji
-            $this->setSetting('registration_enabled', '1');
-            $this->setSetting('photo_upload_enabled', '1');
-            $this->setSetting('photo_rating_enabled', '1');
-            $this->setSetting('login_enabled', '1');
+        // 2) Seedy (admin, access code) – działają dla wszystkich DB, o ile istnieją tabele
+        $usersTableExists = $this->tableExists('users');
+        $settingsTableExists = $this->tableExists('app_settings');
+        $accessCodesTableExists = $this->tableExists('access_codes');
+
+        if ($usersTableExists) {
+            try {
+                // Jeśli baza świeża – utwórz 1 admina i ustawienia
+                $stmt = $this->pdo->query("SELECT COUNT(*) AS cnt FROM users");
+                $count = (int)$stmt->fetch()['cnt'];
+                if ($count === 0) {
+                    $username = getenv('ADMIN_USERNAME') ?: 'admin';
+                    $passwordPlain = getenv('ADMIN_PASSWORD') ?: 'admin';
+                    $passwordHash = password_hash($passwordPlain, PASSWORD_DEFAULT);
+                    $insert = $this->pdo->prepare("INSERT INTO users (username, password, is_admin) VALUES (?, ?, 1)");
+                    $insert->execute([$username, $passwordHash]);
+                    if ($settingsTableExists) {
+                        $this->setSetting('registration_enabled', '1');
+                        $this->setSetting('photo_upload_enabled', '1');
+                        $this->setSetting('photo_rating_enabled', '1');
+                        $this->setSetting('login_enabled', '1');
+                    }
+                }
+
+                // Admin wg ENV i aktualizacja hasła jeśli podane
+                $adminUsername = getenv('ADMIN_USERNAME') ?: 'admin';
+                $adminPasswordEnv = getenv('ADMIN_PASSWORD'); // może być null
+                $checkAdmin = $this->pdo->prepare("SELECT id FROM users WHERE username = ?");
+                $checkAdmin->execute([$adminUsername]);
+                $admin = $checkAdmin->fetch();
+                if (!$admin) {
+                    $passwordToSet = $adminPasswordEnv ?: 'admin';
+                    $passwordHash = password_hash($passwordToSet, PASSWORD_DEFAULT);
+                    $createAdmin = $this->pdo->prepare("INSERT INTO users (username, password, is_admin) VALUES (?, ?, 1)");
+                    $createAdmin->execute([$adminUsername, $passwordHash]);
+                } elseif ($adminPasswordEnv !== false && $adminPasswordEnv !== null && $adminPasswordEnv !== '') {
+                    $passwordHash = password_hash($adminPasswordEnv, PASSWORD_DEFAULT);
+                    $updatePwd = $this->pdo->prepare("UPDATE users SET password = ? WHERE id = ?");
+                    $updatePwd->execute([$passwordHash, $admin['id']]);
+                }
+            } catch (Throwable $e) {
+                // jeśli tabele nie istnieją / błąd kompatybilności – pomiń seedy
+            }
         }
 
-        // Upewnij się, że istnieje konto administratora wg ENV (lub 'admin' domyślnie)
-        $adminUsername = getenv('ADMIN_USERNAME') ?: 'admin';
-        $adminPasswordEnv = getenv('ADMIN_PASSWORD'); // może być null
-        $checkAdmin = $this->pdo->prepare("SELECT id FROM users WHERE username = ?");
-        $checkAdmin->execute([$adminUsername]);
-        $admin = $checkAdmin->fetch();
-        if (!$admin) {
-            $passwordToSet = $adminPasswordEnv ?: 'admin';
-            $passwordHash = password_hash($passwordToSet, PASSWORD_DEFAULT);
-            $createAdmin = $this->pdo->prepare("INSERT INTO users (username, password, is_admin) VALUES (?, ?, 1)");
-            $createAdmin->execute([$adminUsername, $passwordHash]);
-        } elseif ($adminPasswordEnv !== false && $adminPasswordEnv !== null && $adminPasswordEnv !== '') {
-            // Jeśli użytkownik istnieje i podano ADMIN_PASSWORD, zaktualizuj hasło
-            $passwordHash = password_hash($adminPasswordEnv, PASSWORD_DEFAULT);
-            $updatePwd = $this->pdo->prepare("UPDATE users SET password = ? WHERE id = ?");
-            $updatePwd->execute([$passwordHash, $admin['id']]);
+        if ($accessCodesTableExists) {
+            try {
+                $accessCode = getenv('ACCESS_CODE') ?: 'demo';
+                $checkCode = $this->pdo->prepare("SELECT id, is_active FROM access_codes WHERE code = ?");
+                $checkCode->execute([$accessCode]);
+                $code = $checkCode->fetch();
+                if (!$code) {
+                    $createCode = $this->pdo->prepare("INSERT INTO access_codes (code, is_active) VALUES (?, 1)");
+                    $createCode->execute([$accessCode]);
+                } else if ((int)$code['is_active'] !== 1) {
+                    $activate = $this->pdo->prepare("UPDATE access_codes SET is_active = 1 WHERE id = ?");
+                    $activate->execute([$code['id']]);
+                }
+            } catch (Throwable $e) {
+                // pomiń seed jeśli błąd
+            }
+        }
+    }
+
+    /**
+     * Buduje DSN PDO na podstawie ENV. Obsługa:
+     * - DATABASE_URL (np. mysql://user:pass@host:3306/db?charset=utf8mb4)
+     * - Azure *_CONNSTR_* (MYSQL/POSTGRES/SQL/SQLAZURE)
+     * - DB_DRIVER/DB_HOST/DB_PORT/DB_NAME/DB_USER/DB_PASSWORD/DB_CHARSET
+     * - Fallback: lokalne SQLite w repo
+     * @return array{0:string,1:?string,2:?string,3:array}
+     */
+    private function buildDsnFromEnv() {
+        // 1) DATABASE_URL
+        $databaseUrl = getenv('DATABASE_URL');
+        if ($databaseUrl) {
+            $res = $this->dsnFromDatabaseUrl($databaseUrl);
+            $dsn = $res[0];
+            $user = isset($res[1]) ? $res[1] : null;
+            $pass = isset($res[2]) ? $res[2] : null;
+            return array($dsn, $user, $pass, array());
         }
 
-        // Upewnij się, że istnieje kod dostępu wg ENV (lub 'demo' domyślnie)
-        // (bezpośrednio w tabeli, nie w schema.sql)
-        $accessCode = getenv('ACCESS_CODE') ?: 'demo';
-        $checkCode = $this->pdo->prepare("SELECT id, is_active FROM access_codes WHERE code = ?");
-        $checkCode->execute([$accessCode]);
-        $code = $checkCode->fetch();
-        if (!$code) {
-            $createCode = $this->pdo->prepare("INSERT INTO access_codes (code, is_active) VALUES (?, 1)");
-            $createCode->execute([$accessCode]);
-        } else if ((int)$code['is_active'] !== 1) {
-            $activate = $this->pdo->prepare("UPDATE access_codes SET is_active = 1 WHERE id = ?");
-            $activate->execute([$code['id']]);
+        // 2) Azure connection strings
+        $envName = $this->getFirstEnvNameWithPrefixes(array('MYSQLCONNSTR_', 'POSTGRESQLCONNSTR_', 'SQLCONNSTR_', 'SQLAZURECONNSTR_'));
+        if ($envName) {
+            $raw = getenv($envName);
+            $parsed = $this->parseKeyValueConnString($raw);
+            $upper = strtoupper($envName);
+            if ($this->startsWith($upper, 'MYSQLCONNSTR_')) {
+                $host = $parsed['Data Source'] ?? $parsed['Host'] ?? $parsed['Server'] ?? 'localhost';
+                $port = $parsed['Port'] ?? null;
+                $db = $parsed['Database'] ?? '';
+                $user = $parsed['User Id'] ?? $parsed['UserID'] ?? $parsed['User'] ?? null;
+                $pass = $parsed['Password'] ?? null;
+                $charset = getenv('DB_CHARSET') ?: 'utf8mb4';
+                $dsn = 'mysql:host=' . $host . ($port ? ';port=' . $port : '') . ';dbname=' . $db . ';charset=' . $charset;
+                return array($dsn, $user, $pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES {$charset}"));
+            }
+            if ($this->startsWith($upper, 'POSTGRESQLCONNSTR_')) {
+                $host = $parsed['Host'] ?? $parsed['Data Source'] ?? 'localhost';
+                $port = $parsed['Port'] ?? '5432';
+                $db = $parsed['Database'] ?? '';
+                $user = $parsed['User Id'] ?? $parsed['User'] ?? null;
+                $pass = $parsed['Password'] ?? null;
+                $dsn = 'pgsql:host=' . $host . ';port=' . $port . ';dbname=' . $db;
+                return array($dsn, $user, $pass, array());
+            }
+            if ($this->startsWith($upper, 'SQLCONNSTR_') || $this->startsWith($upper, 'SQLAZURECONNSTR_')) {
+                // Azure SQL (MS SQL Server)
+                $host = $parsed['Data Source'] ?? $parsed['Server'] ?? 'localhost';
+                $db = $parsed['Initial Catalog'] ?? $parsed['Database'] ?? '';
+                $user = $parsed['User Id'] ?? $parsed['User'] ?? null;
+                $pass = $parsed['Password'] ?? null;
+                // Prefer sqlsrv driver
+                $dsn = 'sqlsrv:Server=' . $host . ';Database=' . $db;
+                return array($dsn, $user, $pass, array());
+            }
         }
+
+        // 3) Klasyczne zmienne DB_*
+        $driver = getenv('DB_DRIVER');
+        if ($driver) {
+            $driver = strtolower($driver);
+            $host = getenv('DB_HOST') ?: 'localhost';
+            $port = getenv('DB_PORT') ?: '';
+            $db = getenv('DB_NAME') ?: '';
+            $user = getenv('DB_USER') ?: null;
+            $pass = getenv('DB_PASSWORD') ?: null;
+            $charset = getenv('DB_CHARSET') ?: 'utf8mb4';
+            switch ($driver) {
+                case 'mysql':
+                    $dsn = 'mysql:host=' . $host . ($port ? ';port=' . $port : '') . ';dbname=' . $db . ';charset=' . $charset;
+                    return array($dsn, $user, $pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES {$charset}"));
+                case 'pgsql':
+                case 'postgres':
+                case 'postgresql':
+                    $dsn = 'pgsql:host=' . $host . ($port ? ';port=' . $port : '') . ';dbname=' . $db;
+                    return array($dsn, $user, $pass, array());
+                case 'sqlsrv':
+                case 'mssql':
+                    $dsn = 'sqlsrv:Server=' . $host . ($port ? ',' . $port : '') . ';Database=' . $db;
+                    return array($dsn, $user, $pass, array());
+                case 'sqlite':
+                    // jeśli podano ścieżkę – użyj, inaczej fallback lokalny poniżej
+                    $path = getenv('DB_PATH');
+                    if ($path) {
+                        return array('sqlite:' . $path, null, null, array());
+                    }
+                    break;
+            }
+        }
+
+        // 4) Fallback: lokalne SQLite
+        $db_path = __DIR__ . '/database.sqlite';
+        if (!is_dir(__DIR__)) {
+            mkdir(__DIR__, 0755, true);
+        }
+        return array('sqlite:' . $db_path, null, null, array());
+    }
+
+    private function dsnFromDatabaseUrl($url) {
+        $parts = parse_url($url);
+        if ($parts === false || !isset($parts['scheme'])) {
+            throw new Exception('Nieprawidłowy DATABASE_URL');
+        }
+        $scheme = strtolower($parts['scheme']);
+        $user = $parts['user'] ?? null;
+        $pass = $parts['pass'] ?? null;
+        $host = $parts['host'] ?? null;
+        $port = $parts['port'] ?? null;
+        $path = isset($parts['path']) ? ltrim($parts['path'], '/') : null;
+        $query = [];
+        if (isset($parts['query'])) parse_str($parts['query'], $query);
+        switch ($scheme) {
+            case 'mysql':
+                $charset = $query['charset'] ?? (getenv('DB_CHARSET') ?: 'utf8mb4');
+                $dsn = 'mysql:host=' . $host . ($port ? ';port=' . $port : '') . ';dbname=' . $path . ';charset=' . $charset;
+                return array($dsn, $user, $pass);
+            case 'pgsql':
+            case 'postgres':
+                $dsn = 'pgsql:host=' . $host . ';port=' . ($port ?: '5432') . ';dbname=' . $path;
+                return array($dsn, $user, $pass);
+            case 'sqlsrv':
+            case 'mssql':
+                $dsn = 'sqlsrv:Server=' . $host . ($port ? ',' . $port : '') . ';Database=' . $path;
+                return array($dsn, $user, $pass);
+            case 'sqlite':
+                // DATABASE_URL=sqlite:/absolute/path.db lub sqlite:///absolute/path.db
+                if (!empty($parts['path'])) {
+                    $sqlitePath = $parts['path'];
+                    return array('sqlite:' . $sqlitePath, null, null);
+                }
+                // fallback będzie lokalny
+                break;
+        }
+        throw new Exception('Nieobsługiwany schemat w DATABASE_URL: ' . $scheme);
+    }
+
+    private function getFirstEnvNameWithPrefixes($prefixes) {
+        $all = getenv();
+        if (!is_array($all) || empty($all)) {
+            $all = array_merge($_ENV ?? [], $_SERVER ?? []);
+        }
+        foreach ($all as $k => $v) {
+            $uk = strtoupper((string)$k);
+            foreach ($prefixes as $p) {
+                if ($this->startsWith($uk, $p)) return (string)$k;
+            }
+        }
+        return null;
+    }
+
+    private function parseKeyValueConnString($str) {
+        $result = [];
+        if (!$str) return $result;
+        $parts = explode(';', $str);
+        foreach ($parts as $part) {
+            if (trim($part) === '') continue;
+            $tmp = array_map('trim', array_pad(explode('=', $part, 2), 2, ''));
+            $k = isset($tmp[0]) ? $tmp[0] : '';
+            $v = isset($tmp[1]) ? $tmp[1] : '';
+            if ($k !== '') $result[$k] = $v;
+        }
+        return $result;
+    }
+
+    private function tableExists($table) {
+        try {
+            $driver = $this->pdo->getAttribute(PDO::ATTR_DRIVER_NAME);
+            switch ($driver) {
+                case 'sqlite':
+                    $stmt = $this->pdo->prepare("SELECT name FROM sqlite_master WHERE type='table' AND name = ?");
+                    $stmt->execute([$table]);
+                    return (bool)$stmt->fetch();
+                case 'mysql':
+                    $stmt = $this->pdo->prepare("SELECT 1 FROM information_schema.tables WHERE table_schema = DATABASE() AND table_name = ? LIMIT 1");
+                    $stmt->execute([$table]);
+                    return (bool)$stmt->fetchColumn();
+                case 'pgsql':
+                    $stmt = $this->pdo->prepare("SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' AND table_name = ? LIMIT 1");
+                    $stmt->execute([$table]);
+                    return (bool)$stmt->fetchColumn();
+                case 'sqlsrv':
+                    $stmt = $this->pdo->prepare("SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = ?");
+                    $stmt->execute([$table]);
+                    return (bool)$stmt->fetchColumn();
+                default:
+                    return false;
+            }
+        } catch (Throwable $e) {
+            return false;
+        }
+    }
+
+    private function startsWith($haystack, $needle) {
+        return strncmp($haystack, $needle, strlen($needle)) === 0;
     }
 
     /**
