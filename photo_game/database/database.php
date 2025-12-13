@@ -149,7 +149,13 @@ class Database {
     private function buildDsnFromEnv() {
         // 1) DATABASE_URL
         $databaseUrl = getenv('DATABASE_URL');
-        if ($databaseUrl) {
+
+        // Azure czasami przekazuje "DATABASE_URL=mysql://..." zamiast samego URL
+        if ($databaseUrl && strpos($databaseUrl, 'DATABASE_URL=') === 0) {
+            $databaseUrl = substr($databaseUrl, strlen('DATABASE_URL='));
+        }
+
+        if ($databaseUrl && strpos($databaseUrl, '://') !== false) {
             $res = $this->dsnFromDatabaseUrl($databaseUrl);
             $dsn = $res[0];
             $user = isset($res[1]) ? $res[1] : null;
