@@ -2,6 +2,7 @@
 /**
  * Centralizuje wszystkie operacje bazodanowe w jednym miejscu
  */
+if (!class_exists('Database')) {
 class Database {
     private $pdo;
     private static $instance = null;
@@ -46,8 +47,12 @@ class Database {
             $this->ensureInitialized($driver);
 
         } catch (PDOException $e) {
-            error_log("Database connection error: " . $e->getMessage());
-            throw new Exception("Nie można połączyć się z bazą danych");
+            $errorMsg = "Database connection error: " . $e->getMessage();
+            error_log($errorMsg);
+            error_log("DSN: " . ($dsn ?? 'not set'));
+            error_log("User: " . ($user ?? 'not set'));
+            error_log("Pass length: " . (isset($pass) ? strlen($pass) : 0));
+            throw new Exception("Nie można połączyć się z bazą danych: " . $e->getMessage());
         }
     }
 
@@ -1570,4 +1575,5 @@ class Database {
     public function isAccessCodeRequired() {
         return $this->getSetting('require_access_code', '1') === '1';
     }
+}
 }
