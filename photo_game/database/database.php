@@ -47,12 +47,8 @@ class Database {
             $this->ensureInitialized($driver);
 
         } catch (PDOException $e) {
-            $errorMsg = "Database connection error: " . $e->getMessage();
-            error_log($errorMsg);
-            error_log("DSN: " . ($dsn ?? 'not set'));
-            error_log("User: " . ($user ?? 'not set'));
-            error_log("Pass length: " . (isset($pass) ? strlen($pass) : 0));
-            throw new Exception("Nie można połączyć się z bazą danych: " . $e->getMessage());
+            error_log("Database connection failed");
+            throw new Exception("Nie można połączyć się z bazą danych");
         }
     }
 
@@ -126,7 +122,7 @@ class Database {
             $databaseUrl = substr($databaseUrl, strlen('DATABASE_URL='));
         }
 
-        if ($databaseUrl && strpos($databaseUrl, '://') !== false) {
+        if ($databaseUrl) {
             $res = $this->dsnFromDatabaseUrl($databaseUrl);
             $dsn = $res[0];
             $user = isset($res[1]) ? $res[1] : null;
