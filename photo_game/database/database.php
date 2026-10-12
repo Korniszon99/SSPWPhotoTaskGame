@@ -84,61 +84,27 @@ class Database {
         $settingsTableExists = $this->tableExists('app_settings');
         $accessCodesTableExists = $this->tableExists('access_codes');
 
-        if ($usersTableExists) {
-            try {
-                // Jeśli baza świeża – utwórz 1 admina i ustawienia
-                $stmt = $this->pdo->query("SELECT COUNT(*) AS cnt FROM users");
-                $count = (int)$stmt->fetch()['cnt'];
-                if ($count === 0) {
-                    $username = getenv('ADMIN_USERNAME') ?: 'admin';
-                    $passwordPlain = getenv('ADMIN_PASSWORD') ?: 'admin';
-                    $passwordHash = password_hash($passwordPlain, PASSWORD_DEFAULT);
-                    $insert = $this->pdo->prepare("INSERT INTO users (username, password, is_admin) VALUES (?, ?, 1)");
-                    $insert->execute([$username, $passwordHash]);
-                    if ($settingsTableExists) {
-                        $this->setSetting('registration_enabled', '1');
-                        $this->setSetting('photo_upload_enabled', '1');
-                        $this->setSetting('photo_rating_enabled', '1');
-                        $this->setSetting('login_enabled', '1');
-                    }
-                }
-
-                // Admin wg ENV i aktualizacja hasła jeśli podane
-                $adminUsername = getenv('ADMIN_USERNAME') ?: 'admin';
-                $adminPasswordEnv = getenv('ADMIN_PASSWORD'); // może być null
-                $checkAdmin = $this->pdo->prepare("SELECT id FROM users WHERE username = ?");
-                $checkAdmin->execute([$adminUsername]);
-                $admin = $checkAdmin->fetch();
-                if (!$admin) {
-                    $passwordToSet = $adminPasswordEnv ?: 'admin';
-                    $passwordHash = password_hash($passwordToSet, PASSWORD_DEFAULT);
-                    $createAdmin = $this->pdo->prepare("INSERT INTO users (username, password, is_admin) VALUES (?, ?, 1)");
-                    $createAdmin->execute([$adminUsername, $passwordHash]);
-                } elseif ($adminPasswordEnv !== false && $adminPasswordEnv !== null && $adminPasswordEnv !== '') {
-                    $passwordHash = password_hash($adminPasswordEnv, PASSWORD_DEFAULT);
-                    $updatePwd = $this->pdo->prepare("UPDATE users SET password = ? WHERE id = ?");
-                    $updatePwd->execute([$passwordHash, $admin['id']]);
-                }
-            } catch (Throwable $e) {
-                // jeśli tabele nie istnieją / błąd kompatybilności – pomiń seedy
+        // Bootstrap only on explicit operator input, never reset an existing account.
+        $adminUsername = getenv('ADMIN_USERNAME') ?: 'admin';
+        $adminPassword = getenv('ADMIN_PASSWORD');
+        if ($adminPassword && strlen($adminPassword) < 12) {
+            throw new Exception('ADMIN_PASSWORD must contain at least 12 characters');
+        }
+        if ($usersTableExists && $adminPassword) {
+            $check = $this->pdo->prepare("SELECT id FROM users WHERE username = ?");
+            $check->execute([$adminUsername]);
+            if (!$check->fetch()) {
+                $insert = $this->pdo->prepare("INSERT INTO users (username, password, is_admin) VALUES (?, ?, 1)");
+                $insert->execute([$adminUsername, password_hash($adminPassword, PASSWORD_DEFAULT)]);
             }
         }
-
-        if ($accessCodesTableExists) {
-            try {
-                $accessCode = getenv('ACCESS_CODE') ?: 'demo';
-                $checkCode = $this->pdo->prepare("SELECT id, is_active FROM access_codes WHERE code = ?");
-                $checkCode->execute([$accessCode]);
-                $code = $checkCode->fetch();
-                if (!$code) {
-                    $createCode = $this->pdo->prepare("INSERT INTO access_codes (code, is_active) VALUES (?, 1)");
-                    $createCode->execute([$accessCode]);
-                } else if ((int)$code['is_active'] !== 1) {
-                    $activate = $this->pdo->prepare("UPDATE access_codes SET is_active = 1 WHERE id = ?");
-                    $activate->execute([$code['id']]);
-                }
-            } catch (Throwable $e) {
-                // pomiń seed jeśli błąd
+        $accessCode = getenv('ACCESS_CODE');
+        if ($accessCodesTableExists && $accessCode) {
+            $check = $this->pdo->prepare("SELECT id FROM access_codes WHERE code = ?");
+            $check->execute([$accessCode]);
+            if (!$check->fetch()) {
+                $insert = $this->pdo->prepare("INSERT INTO access_codes (code, is_active) VALUES (?, 1)");
+                $insert->execute([$accessCode]);
             }
         }
     }

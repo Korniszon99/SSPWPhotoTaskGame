@@ -28,7 +28,7 @@ jobs:
       - name: Zip artifact for deployment
         run: |
           # Include dotfiles (e.g., .htaccess) and entire repo contents
-          zip -r release.zip .
+          zip -r release.zip index.php photo_game -x "photo_game/debug.php" "*.sqlite" "*.sqlite3" "*.db" "*.log"
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
